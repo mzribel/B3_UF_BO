@@ -1,0 +1,88 @@
+import { defineStore } from 'pinia';
+import { authApi } from '../services/api';
+import axios from 'axios';
+
+interface User {
+  id: number;
+  email: string;
+  displayName?: string;
+  isAdmin: boolean;
+}
+
+interface AuthState {
+  token: string | null;
+  user: User | null;
+  isAuthenticated: boolean;
+}
+
+export const useAuthStore = defineStore('auth', {
+  state: (): AuthState => ({
+    token: localStorage.getItem('token'),
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
+    isAuthenticated: !!localStorage.getItem('token')
+  }),
+  
+  getters: {
+    isAdmin: (state) => state.user?.isAdmin || false,
+    getToken: (state) => state.token
+  },
+  
+  actions: {
+    async login(credentials: { email: string; password: string }) {
+      try {
+        const response = await authApi.login(credentials);
+        
+        this.token = response.data.token;
+        this.user = response.data.user;
+        this.isAuthenticated = true;
+        
+        // Store in localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        // Update axios default headers
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        
+        return true;
+      } catch (error) {
+        console.error('Login error:', error);
+        return false;
+      }
+    },
+    
+    async register(userData: any) {
+      try {
+        await authApi.register(userData);
+        return true;
+      } catch (error) {
+        console.error('Registration error:', error);
+        return false;
+      }
+    },
+    
+    logout() {
+      this.token = null;
+      this.user = null;
+      this.isAuthenticated = false;
+      
+      // Remove from localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Remove from axios headers
+      delete axios.defaults.headers.common['Authorization'];
+    },
+    
+    initializeAuth() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (token && user) {
+        this.token = token;
+        this.user = JSON.parse(user);
+        this.isAuthenticated = true;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+    }
+  }
+});
