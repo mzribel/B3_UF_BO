@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useCatsStore } from '../store/cats';
+import { useCatsStore } from '../stores/cats';
 import CatForm from '../components/CatForm.vue';
 import CatList from '../components/CatList.vue';
 
-// Store
 const catsStore = useCatsStore();
 
-// Load cats when component is mounted
 onMounted(() => {
   catsStore.fetchCats();
 });
@@ -18,16 +16,13 @@ onMounted(() => {
     <header class="page-header">
       <h1>
         <span class="paw-icon">🐱</span> 
-        Feline Friends Management
+        Gestion des Amis Félins
       </h1>
-      <p class="subtitle">Manage these MF companions</p>
     </header>
 
     <div class="content-wrapper">
-      <!-- Cat Form Component -->
       <CatForm @cat-added="catsStore.fetchCats()" />
 
-      <!-- Cat List Component -->
       <CatList />
     </div>
   </div>

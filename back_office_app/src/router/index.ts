@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
-// Define routes
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -20,7 +19,74 @@ const routes: Array<RouteRecordRaw> = [
     path: '/users',
     name: 'Users',
     component: () => import('../views/Users.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/catteries',
+    name: 'Catteries',
+    component: () => import('../views/Catteries.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/catteries/new',
+    name: 'CatteryNew',
+    component: () => import('../views/CatteryNew.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/catteries/:id',
+    name: 'CatteryDetail',
+    component: () => import('../views/CatteryDetail.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/catteries/:catteryId/cats/new',
+    name: 'CatNew',
+    component: () => import('../views/CatNew.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/loof',
+    name: 'LoofCharacteristics',
+    component: () => import('../views/LoofCharacteristics.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/breeds',
+    name: 'LoofBreeds',
+    component: () => import('../views/LoofBreeds.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/coat-colors',
+    name: 'LoofCoatColors',
+    component: () => import('../views/LoofCoatColors.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/coat-patterns',
+    name: 'LoofCoatPatterns',
+    component: () => import('../views/LoofCoatPatterns.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/coat-effects',
+    name: 'LoofCoatEffects',
+    component: () => import('../views/LoofCoatEffects.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/coat-white-markings',
+    name: 'LoofCoatWhiteMarkings',
+    component: () => import('../views/LoofCoatWhiteMarkings.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/loof/poly-types',
+    name: 'LoofPolyTypes',
+    component: () => import('../views/LoofPolyTypes.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/register',
@@ -36,44 +102,36 @@ const routes: Array<RouteRecordRaw> = [
   }
 ];
 
-// Create router instance
 const router = createRouter({
   history: createWebHistory(),
   routes
 });
 
-// Navigation guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
 
-  // Initialize auth from localStorage if needed
   if (!authStore.isAuthenticated && localStorage.getItem('token')) {
     authStore.initializeAuth();
   }
 
-  // Check if the route requires authentication
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
 
-  // If route requires authentication and user is not authenticated, redirect to login
   if (requiresAuth && !authStore.isAuthenticated) {
     next({ name: 'Login' });
     return;
   }
 
-  // If route requires admin and user is not admin, redirect to home
   if (requiresAdmin && !authStore.isAdmin) {
     next({ name: 'Home' });
     return;
   }
 
-  // If user is authenticated and tries to access login/register, redirect to home
   if (authStore.isAuthenticated && to.meta.requiresAuth === false) {
     next({ name: 'Home' });
     return;
   }
 
-  // Otherwise proceed normally
   next();
 });
 

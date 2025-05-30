@@ -1,15 +1,14 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { catApi } from '../services/api';
+import { catApi } from '../services/api.ts';
 import type { Cat, NewCat } from '../types';
 
 export const useCatsStore = defineStore('cats', () => {
-  // State
+
   const cats = ref<Cat[]>([]);
   const loading = ref(false);
   const error = ref('');
 
-  // Actions
   const fetchCats = async () => {
     loading.value = true;
     error.value = '';
@@ -25,13 +24,12 @@ export const useCatsStore = defineStore('cats', () => {
     }
   };
 
-  const addCat = async (newCat: NewCat) => {
+  const addCat = async (catteryId: number, newCat: NewCat) => {
     loading.value = true;
     error.value = '';
 
     try {
-      await catApi.createCat(newCat);
-      // Reload cats after adding a new one
+      await catApi.createCat(catteryId, newCat);
       await fetchCats();
       return true;
     } catch (err) {
@@ -49,7 +47,6 @@ export const useCatsStore = defineStore('cats', () => {
 
     try {
       await catApi.updateCat(id, catData);
-      // Reload cats after updating
       await fetchCats();
       return true;
     } catch (err) {
@@ -67,7 +64,6 @@ export const useCatsStore = defineStore('cats', () => {
 
     try {
       await catApi.deleteCat(id);
-      // Reload cats after deleting
       await fetchCats();
       return true;
     } catch (err) {
@@ -79,12 +75,27 @@ export const useCatsStore = defineStore('cats', () => {
     }
   };
 
-  // Return state and actions
+  const fetchCatsByCatteryId = async (catteryId: number) => {
+    loading.value = true;
+    error.value = '';
+
+    try {
+      const response = await catApi.getCatteryCats(catteryId);
+      cats.value = response.data;
+    } catch (err) {
+      console.error(`Error loading cats for cattery ${catteryId}:`, err);
+      error.value = 'Failed to load cats for this cattery. Please try again.';
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     cats,
     loading,
     error,
     fetchCats,
+    fetchCatsByCatteryId,
     addCat,
     updateCat,
     deleteCat

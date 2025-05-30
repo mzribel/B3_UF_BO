@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useCatsStore } from '../store/cats';
+import { useCatsStore } from '../stores/cats';
 import type { Cat, NewCat } from '../types';
 
-// Props and emits
 const props = defineProps<{
   cat: Cat;
   show: boolean;
@@ -11,10 +10,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'cat-updated']);
 
-// Store
 const catsStore = useCatsStore();
 
-// Form data
 const editedCat = ref<NewCat>({
   name: '',
   birthDate: '',
@@ -25,7 +22,6 @@ const editedCat = ref<NewCat>({
   }
 });
 
-// Initialize form with cat data
 onMounted(() => {
   if (props.cat) {
     editedCat.value = {
@@ -40,10 +36,9 @@ onMounted(() => {
   }
 });
 
-// Form submission
 const submitForm = async () => {
   const success = await catsStore.updateCat(props.cat.id, editedCat.value);
-  
+
   if (success) {
     // Emit event
     emit('cat-updated');
@@ -52,7 +47,6 @@ const submitForm = async () => {
   }
 };
 
-// Close modal
 const closeModal = () => {
   emit('close');
 };
@@ -62,43 +56,43 @@ const closeModal = () => {
   <div v-if="show" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Edit Cat</h2>
+        <h2>Modifier le Chat</h2>
         <button class="close-button" @click="closeModal">&times;</button>
       </div>
-      
+
       <form @submit.prevent="submitForm">
         <div class="form-group">
-          <label for="name">Name:</label>
-          <input id="name" v-model="editedCat.name" required placeholder="Enter your cat's name" />
+          <label for="name">Nom :</label>
+          <input id="name" v-model="editedCat.name" required placeholder="Entrez le nom de votre chat" />
         </div>
-        
+
         <div class="form-group">
-          <label for="birthDate">Birth Date:</label>
+          <label for="birthDate">Date de Naissance :</label>
           <input id="birthDate" type="date" v-model="editedCat.birthDate" required />
         </div>
-        
+
         <div class="form-group">
-          <label for="gender">Gender:</label>
+          <label for="gender">Genre :</label>
           <select id="gender" v-model="editedCat.gender" required>
-            <option value="">Select gender</option>
-            <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
+            <option value="">Sélectionnez le genre</option>
+            <option value="MALE">Mâle</option>
+            <option value="FEMALE">Femelle</option>
           </select>
         </div>
-        
+
         <div class="form-group">
-          <label for="coatColor">Coat Color:</label>
-          <input id="coatColor" v-model="editedCat.coat.color" required placeholder="e.g., Orange, Black, White" />
+          <label for="coatColor">Couleur du Pelage :</label>
+          <input id="coatColor" v-model="editedCat.coat.color" required placeholder="ex : Orange, Noir, Blanc" />
         </div>
-        
+
         <div class="form-group">
-          <label for="coatPattern">Coat Pattern:</label>
-          <input id="coatPattern" v-model="editedCat.coat.pattern" required placeholder="e.g., Tabby, Solid, Calico" />
+          <label for="coatPattern">Motif du Pelage :</label>
+          <input id="coatPattern" v-model="editedCat.coat.pattern" required placeholder="ex : Tabby, Uni, Calico" />
         </div>
-        
+
         <div class="button-group">
-          <button type="button" class="btn-cancel" @click="closeModal">Cancel</button>
-          <button type="submit" class="btn-submit">Update Cat</button>
+          <button type="button" class="btn-cancel" @click="closeModal">Annuler</button>
+          <button type="submit" class="btn-submit">Mettre à Jour le Chat</button>
         </div>
       </form>
     </div>
@@ -225,16 +219,16 @@ input::placeholder {
   .modal-content {
     width: 95%;
   }
-  
+
   form {
     padding: 1rem;
   }
-  
+
   .button-group {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .btn-cancel, .btn-submit {
     width: 100%;
   }

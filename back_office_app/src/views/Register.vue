@@ -26,7 +26,7 @@ const register = async () => {
     const registerSuccess = await authStore.register(userData.value);
 
     if (registerSuccess) {
-      success.value = 'Registration successful!';
+      success.value = 'Inscription réussie !';
 
       // Reset form
       userData.value = {
@@ -40,11 +40,11 @@ const register = async () => {
         router.push('/login');
       }, 2000);
     } else {
-      error.value = 'Failed to register user. Please try again.';
+      error.value = 'Échec de l\'inscription. Veuillez réessayer.';
     }
   } catch (err) {
     console.error('Error registering user:', err);
-    error.value = 'Failed to register user. Please try again.';
+    error.value = 'Échec de l\'inscription. Veuillez réessayer.';
   } finally {
     loading.value = false;
   }

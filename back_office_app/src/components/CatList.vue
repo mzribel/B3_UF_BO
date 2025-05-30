@@ -1,41 +1,34 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useCatsStore } from '../store/cats';
-import { Cat } from '../types';
+import { useCatsStore } from '../stores/cats';
+import type { Cat } from '../types';
 import CatEditForm from './CatEditForm.vue';
 
-// Store
 const catsStore = useCatsStore();
 
-// Computed properties
 const cats = computed(() => catsStore.cats);
 const loading = computed(() => catsStore.loading);
 const error = computed(() => catsStore.error);
 const hasCats = computed(() => cats.value.length > 0);
 
-// State for edit modal
 const showEditModal = ref(false);
 const selectedCat = ref<Cat | null>(null);
 
-// Format date
 const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString();
 };
 
-// Get gender display name
 const getGenderDisplay = (gender: string): string => {
-  return gender === 'MALE' ? 'Male' : gender === 'FEMALE' ? 'Female' : gender;
+  return gender === 'MALE' ? 'Mâle' : gender === 'FEMALE' ? 'Femelle' : gender;
 };
 
-// Open edit modal
 const openEditModal = (cat: Cat) => {
   selectedCat.value = cat;
   showEditModal.value = true;
 };
 
-// Delete cat
 const deleteCat = async (id: number) => {
-  if (confirm('Are you sure you want to delete this cat?')) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ce chat ?')) {
     await catsStore.deleteCat(id);
   }
 };
@@ -43,36 +36,32 @@ const deleteCat = async (id: number) => {
 
 <template>
   <div class="cat-list">
-    <h2>Your Feline Friends</h2>
+    <h2>Vos Amis Félins</h2>
 
-    <!-- Error message -->
     <div v-if="error" class="error-message">
       <span class="error-icon">⚠️</span> {{ error }}
     </div>
 
-    <!-- Loading state -->
     <div v-if="loading" class="loading">
       <div class="loading-spinner"></div>
-      <p>Loading your furry friends...</p>
+      <p>Chargement de vos amis félins...</p>
     </div>
 
-    <!-- Empty state -->
     <div v-else-if="!hasCats" class="no-cats">
-      <p>No cats found. Add your first feline friend above!</p>
+      <p>Aucun chat trouvé. Ajoutez votre premier ami félin ci-dessus !</p>
       <div class="cat-emoji">😿</div>
     </div>
 
-    <!-- Cats table -->
     <div v-else class="table-container">
       <table class="cats-table">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Birth Date</th>
-            <th>Gender</th>
-            <th>Coat Color</th>
-            <th>Coat Pattern</th>
+            <th>Nom</th>
+            <th>Date de Naissance</th>
+            <th>Genre</th>
+            <th>Couleur du Pelage</th>
+            <th>Motif du Pelage</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -82,11 +71,11 @@ const deleteCat = async (id: number) => {
             <td class="cat-name">{{ cat.name }}</td>
             <td>{{ formatDate(cat.birthDate) }}</td>
             <td>{{ getGenderDisplay(cat.gender) }}</td>
-            <td>{{ cat.coat.color }}</td>
-            <td>{{ cat.coat.pattern }}</td>
+            <td>{{ cat.coat?.color || '-' }}</td>
+            <td>{{ cat.coat?.pattern || '-' }}</td>
             <td class="actions">
-              <button class="btn-edit" @click="openEditModal(cat)">Edit</button>
-              <button class="btn-delete" @click="deleteCat(cat.id)">Delete</button>
+              <button class="btn-edit" @click="openEditModal(cat)">Modifier</button>
+              <button class="btn-delete" @click="deleteCat(cat.id)">Supprimer</button>
             </td>
           </tr>
         </tbody>
@@ -94,7 +83,6 @@ const deleteCat = async (id: number) => {
     </div>
   </div>
 
-  <!-- Edit Cat Modal -->
   <CatEditForm 
     v-if="selectedCat" 
     :cat="selectedCat" 

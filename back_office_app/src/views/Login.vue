@@ -8,13 +8,11 @@ const authStore = useAuthStore();
 const error = ref('');
 const loading = ref(false);
 
-// Form data for login
 const credentials = ref({
   email: '',
   password: ''
 });
 
-// Login user
 const login = async () => {
   loading.value = true;
   error.value = '';
@@ -23,14 +21,13 @@ const login = async () => {
     const success = await authStore.login(credentials.value);
 
     if (success) {
-      // Redirect to home page (router guard will handle this automatically)
       await router.push('/');
     } else {
-      error.value = 'Failed to login. Please check your credentials and try again.';
+      error.value = 'Échec de connexion. Veuillez vérifier vos identifiants et réessayer.';
     }
   } catch (err) {
     console.error('Error logging in:', err);
-    error.value = 'Failed to login. Please check your credentials and try again.';
+    error.value = 'Échec de connexion. Veuillez vérifier vos identifiants et réessayer.';
   } finally {
     loading.value = false;
   }
@@ -39,26 +36,24 @@ const login = async () => {
 
 <template>
   <div class="login-container">
-    <h1>Login</h1>
+    <h1>Connexion</h1>
 
-    <!-- Error message -->
     <div v-if="error" class="error-message">{{ error }}</div>
 
-    <!-- Login form -->
     <div class="form-container">
       <form @submit.prevent="login">
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email">Email :</label>
           <input id="email" type="email" v-model="credentials.email" required />
         </div>
 
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password">Mot de passe :</label>
           <input id="password" type="password" v-model="credentials.password" required />
         </div>
 
         <button type="submit" class="btn-submit" :disabled="loading">
-          {{ loading ? 'Logging in...' : 'Login' }}
+          {{ loading ? 'Connexion en cours...' : 'Se connecter' }}
         </button>
       </form>
     </div>

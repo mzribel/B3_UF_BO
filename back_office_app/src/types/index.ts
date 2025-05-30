@@ -1,8 +1,10 @@
-// TypeScript interfaces for the application
 
+// Cat related interfaces
 export interface Coat {
   color: string;
   pattern: string;
+  effect?: string;
+  whiteMarking?: string;
 }
 
 export interface Cat {
@@ -11,6 +13,8 @@ export interface Cat {
   birthDate: string;
   gender: string;
   coat: Coat;
+  breedId?: number;
+  catteryId?: number;
 }
 
 export interface NewCat {
@@ -18,4 +22,202 @@ export interface NewCat {
   birthDate: string;
   gender: string;
   coat: Coat;
+  breedId?: number;
+}
+
+export interface CatDetails extends Cat {
+  breed?: Breed;
+  cattery?: Cattery;
+  healthLogs?: HealthLog[];
+}
+
+// User related interfaces
+export interface User {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
+export interface NewUser {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+// Breeder related interfaces
+export interface Breeder {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  address?: Address;
+  catteryId?: number;
+}
+
+export interface NewBreeder {
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  address?: Address;
+}
+
+export interface UpdateBreeder extends NewBreeder {
+  id?: number;
+}
+
+export interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
+}
+
+// Cattery related interfaces
+export interface Cattery {
+  id: number;
+  name: string;
+  breeder?: Breeder;
+  members?: User[];
+  cats?: Cat[];
+}
+
+export interface NewCattery {
+  name: string;
+  breederId?: number;
+}
+
+export interface UserCatteries {
+  user: User;
+  catteries: Cattery[];
+}
+
+// Health Log related interfaces
+export interface HealthLog {
+  id: number;
+  date: string;
+  description: string;
+  catId: number;
+  type: string;
+}
+
+export interface NewHealthLog {
+  date: string;
+  description: string;
+  catId: number;
+  type: string;
+}
+
+export interface KittenHealthLog {
+  id: number;
+  healthLogId: number;
+  weight: number;
+  height?: number;
+  length?: number;
+}
+
+export interface NewKittenHealthLog {
+  healthLogId: number;
+  weight: number;
+  height?: number;
+  length?: number;
+}
+
+export interface GestationHealthLog {
+  id: number;
+  healthLogId: number;
+  gestationId: number;
+  gestationDay: number;
+  notes?: string;
+}
+
+export interface NewGestationHealthLog {
+  healthLogId: number;
+  gestationId: number;
+  gestationDay: number;
+  notes?: string;
+}
+
+// LOOF Characteristic interfaces
+export interface Breed {
+  id: number;
+  name: string;
+  description?: string;
+  code?: string;
+}
+
+export interface NewBreed {
+  name: string;
+  description?: string;
+  code?: string;
+}
+
+export interface CoatColor {
+  id: number;
+  name: string;
+  code?: string;
+}
+
+export interface NewCoatColor {
+  name: string;
+  code?: string;
+}
+
+export interface CoatEffect {
+  id: number;
+  name: string;
+  code?: string;
+}
+
+export interface NewCoatEffect {
+  name: string;
+  code?: string;
+}
+
+export interface CoatPattern {
+  id: number;
+  name: string;
+  code?: string;
+}
+
+export interface NewCoatPattern {
+  name: string;
+  code?: string;
+}
+
+export interface CoatWhiteMarking {
+  id: number;
+  name: string;
+  code?: string;
+}
+
+export interface NewCoatWhiteMarking {
+  name: string;
+  code?: string;
+}
+
+export interface PolyType {
+  id: number;
+  name: string;
+  code?: string;
+}
+
+export interface NewPolyType {
+  name: string;
+  code?: string;
 }

@@ -11,19 +11,19 @@ const navigateTo = (route: string) => {
 
 <template>
   <div class="home">
-    <h1>Cat Management System</h1>
+    <h1>Système de Gestion de Chats</h1>
     <div class="card-container">
       <div class="card" @click="navigateTo('/cats')">
-        <h2>Cats</h2>
-        <p>Manage your cats</p>
+        <h2>Chats</h2>
+        <p>Gérer vos chats</p>
       </div>
       <div class="card" @click="navigateTo('/users')">
-        <h2>Users</h2>
-        <p>Manage users</p>
+        <h2>Utilisateurs</h2>
+        <p>Gérer les utilisateurs</p>
       </div>
       <div class="card" @click="navigateTo('/register')">
-        <h2>Register</h2>
-        <p>Register a new user</p>
+        <h2>Inscription</h2>
+        <p>Inscrire un nouvel utilisateur</p>
       </div>
     </div>
   </div>
