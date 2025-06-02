@@ -10,12 +10,6 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/cats',
-    name: 'Cats',
-    component: () => import('../views/Cats.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/users',
     name: 'Users',
     component: () => import('../views/Users.vue'),
@@ -89,15 +83,21 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: () => import('../views/Register.vue'),
-    meta: { requiresAuth: false }
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/design-system',
+    name: 'DesignSystem',
+    component: () => import('../design-system/documentation/Showcase.vue'),
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/design-system-test',
+    name: 'DesignSystemTest',
+    component: () => import('../views/DesignSystemTest.vue'),
     meta: { requiresAuth: false }
   }
 ];
@@ -122,7 +122,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (requiresAdmin && !authStore.isAdmin) {
+  if (requiresAdmin && !authStore.adminState) {
     next({ name: 'Home' });
     return;
   }

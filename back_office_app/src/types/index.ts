@@ -157,67 +157,67 @@ export interface NewGestationHealthLog {
 export interface Breed {
   id: number;
   name: string;
-  description?: string;
-  code?: string;
+  details?: string;
+  code: string;
 }
 
 export interface NewBreed {
   name: string;
-  description?: string;
-  code?: string;
+  details?: string;
+  code: string;
 }
 
 export interface CoatColor {
   id: number;
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface NewCoatColor {
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface CoatEffect {
   id: number;
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface NewCoatEffect {
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface CoatPattern {
   id: number;
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface NewCoatPattern {
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface CoatWhiteMarking {
   id: number;
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface NewCoatWhiteMarking {
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface PolyType {
   id: number;
   name: string;
-  code?: string;
+  code: string;
 }
 
 export interface NewPolyType {
   name: string;
-  code?: string;
+  code: string;
 }

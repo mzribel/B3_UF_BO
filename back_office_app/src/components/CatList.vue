@@ -3,6 +3,8 @@ import { computed, ref } from 'vue';
 import { useCatsStore } from '../stores/cats';
 import type { Cat } from '../types';
 import CatEditForm from './CatEditForm.vue';
+import Button from '../design-system/components/Button.vue';
+import Card from '../design-system/components/Card.vue';
 
 const catsStore = useCatsStore();
 
@@ -35,10 +37,10 @@ const deleteCat = async (id: number) => {
 </script>
 
 <template>
-  <div class="cat-list">
+  <Card class="cat-list" variant="default" shadow="md" padding="lg">
     <h2>Vos Amis Félins</h2>
 
-    <div v-if="error" class="error-message">
+    <div v-if="error" class="bg-error error-message">
       <span class="error-icon">⚠️</span> {{ error }}
     </div>
 
@@ -74,14 +76,14 @@ const deleteCat = async (id: number) => {
             <td>{{ cat.coat?.color || '-' }}</td>
             <td>{{ cat.coat?.pattern || '-' }}</td>
             <td class="actions">
-              <button class="btn-edit" @click="openEditModal(cat)">Modifier</button>
-              <button class="btn-delete" @click="deleteCat(cat.id)">Supprimer</button>
+              <Button variant="info" size="sm" @click="openEditModal(cat)">Modifier</Button>
+              <Button variant="danger" size="sm" @click="deleteCat(cat.id)">Supprimer</Button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
+  </Card>
 
   <CatEditForm 
     v-if="selectedCat" 
@@ -93,40 +95,28 @@ const deleteCat = async (id: number) => {
 </template>
 
 <style scoped>
-.cat-list {
-  background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e9ecef;
-}
-
 h2 {
-  color: #6c5ce7;
-  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
+  margin-bottom: var(--space-lg);
   text-align: center;
-  font-size: 1.5rem;
+  font-size: var(--font-size-lg);
 }
 
 .error-message {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   display: flex;
   align-items: center;
 }
 
 .error-icon {
-  margin-right: 0.5rem;
+  margin-right: var(--space-xs);
   font-size: 1.2rem;
 }
 
 .loading {
   text-align: center;
-  padding: 2rem;
-  color: #6c5ce7;
+  padding: var(--space-xl);
+  color: var(--secondary-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -135,11 +125,11 @@ h2 {
 .loading-spinner {
   border: 4px solid rgba(108, 92, 231, 0.3);
   border-radius: 50%;
-  border-top: 4px solid #6c5ce7;
+  border-top: 4px solid var(--secondary-color);
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
 
 @keyframes spin {
@@ -149,8 +139,8 @@ h2 {
 
 .no-cats {
   text-align: center;
-  padding: 2rem;
-  color: #636e72;
+  padding: var(--space-xl);
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -158,7 +148,7 @@ h2 {
 
 .cat-emoji {
   font-size: 3rem;
-  margin-top: 1rem;
+  margin-top: var(--space-md);
 }
 
 .table-container {
@@ -168,19 +158,19 @@ h2 {
 .cats-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: var(--space-md);
 }
 
 .cats-table th, .cats-table td {
-  padding: 0.75rem;
+  padding: var(--space-sm);
   text-align: left;
-  border-bottom: 1px solid #dfe6e9;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .cats-table th {
-  background-color: #f1f2f6;
-  font-weight: 600;
-  color: #2d3436;
+  background-color: var(--bg-muted);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-dark);
 }
 
 .cat-row {
@@ -188,68 +178,32 @@ h2 {
 }
 
 .cat-row:hover {
-  background-color: #f8f9fa;
+  background-color: var(--bg-muted);
 }
 
 .cat-name {
-  font-weight: 600;
-  color: #6c5ce7;
+  font-weight: var(--font-weight-medium);
+  color: var(--secondary-color);
 }
 
 .actions {
   display: flex;
-  gap: 0.5rem;
-}
-
-.btn-edit, .btn-delete {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.btn-edit {
-  background-color: #3498db;
-  color: white;
-}
-
-.btn-edit:hover {
-  background-color: #2980b9;
-}
-
-.btn-delete {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-delete:hover {
-  background-color: #c0392b;
+  gap: var(--space-xs);
 }
 
 @media (max-width: 768px) {
-  .cat-list {
-    padding: 1rem;
-  }
-
   h2 {
-    font-size: 1.3rem;
+    font-size: calc(var(--font-size-lg) * 0.85);
   }
 
   .cats-table th, .cats-table td {
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    padding: var(--space-xs);
+    font-size: var(--font-size-sm);
   }
 
   .actions {
     flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .btn-edit, .btn-delete {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
+    gap: var(--space-xs);
   }
 }
 </style>

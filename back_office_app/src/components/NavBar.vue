@@ -16,10 +16,9 @@ const logout = async () => {
     <div class="nav-brand">Application Back Office</div>
     <div class="nav-links">
       <router-link to="/" class="nav-link">Accueil</router-link>
-      <router-link to="/cats" class="nav-link">Chats</router-link>
-      <router-link to="/catteries" class="nav-link">Chatteries</router-link>
-      <router-link to="/users" class="nav-link">Utilisateurs</router-link>
-      <router-link to="/loof" class="nav-link">Caractéristiques LOOF</router-link>
+      <router-link v-if="authStore.isAdmin" to="/catteries" class="nav-link">Chatteries</router-link>
+      <router-link v-if="authStore.isAdmin" to="/users" class="nav-link">Utilisateurs</router-link>
+      <router-link v-if="authStore.isAdmin" to="/loof" class="nav-link">Caractéristiques LOOF</router-link>
 
       <div v-if="authStore.isAuthenticated" class="user-info">
         <span>{{ authStore.user?.email }}</span>
@@ -28,7 +27,6 @@ const logout = async () => {
 
       <div v-else>
         <router-link to="/login" class="nav-link">Connexion</router-link>
-        <router-link to="/register" class="nav-link">Inscription</router-link>
       </div>
     </div>
   </nav>
@@ -39,26 +37,26 @@ const logout = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #42b883;
-  color: white;
-  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  padding: var(--space-md) var(--space-xl);
 }
 
 .nav-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: var(--space-lg);
 }
 
 .nav-link {
-  color: white;
+  color: var(--text-light);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .nav-link:hover {
@@ -68,20 +66,20 @@ const logout = async () => {
 .user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .logout-btn {
-  background-color: white;
-  color: #42b883;
+  background-color: var(--text-light);
+  color: var(--primary-color);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .logout-btn:hover {
-  background-color: #f0f0f0;
+  background-color: var(--bg-muted);
 }
 </style>

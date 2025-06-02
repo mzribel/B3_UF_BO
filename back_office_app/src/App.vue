@@ -36,13 +36,6 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  color: #97C8EB;
-  background-color: #001011;
-}
-
 /* App layout */
 .app {
   display: flex;
@@ -52,11 +45,11 @@ body {
 
 /* Header styles */
 header {
-  background-color: #093A3E;
-  color: #97C8EB;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  background-color: var(--bg-header);
+  color: var(--text-highlight);
+  padding: var(--space-md) var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
 }
 
 nav {
@@ -68,9 +61,9 @@ nav {
 }
 
 .logo a {
-  color: #64E9EE;
-  font-size: 1.5rem;
-  font-weight: bold;
+  color: var(--primary-light);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
   text-decoration: none;
 }
 
@@ -80,13 +73,13 @@ nav {
 }
 
 .nav-links li {
-  margin-left: 1.5rem;
+  margin-left: var(--space-lg);
 }
 
 .nav-links a {
-  color: #3AAFB9;
+  color: var(--secondary-light);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   transition: opacity 0.3s;
 }
 
@@ -95,21 +88,21 @@ nav {
 }
 
 .nav-links a.router-link-active {
-  border-bottom: 2px solid #847996;
+  border-bottom: 2px solid var(--border-active);
 }
 
 /* Main content */
 main {
   flex: 1;
-  padding: 2rem;
+  padding: var(--space-xl);
 }
 
 /* Footer styles */
 footer {
-  background-color: #2c3e50;
-  color: #97C8EB;
+  background-color: var(--bg-footer);
+  color: var(--text-highlight);
   text-align: center;
-  padding: 1rem;
+  padding: var(--space-md);
   margin-top: auto;
 }
 </style>

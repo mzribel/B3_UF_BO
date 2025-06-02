@@ -4,6 +4,9 @@ import { useCatsStore } from '../stores/cats';
 import { useLoofCharacteristicsStore } from '../stores/loofCharacteristics';
 import type { NewCat } from '../types';
 import { useRoute, useRouter } from 'vue-router';
+import Card from '../design-system/components/Card.vue';
+import Button from '../design-system/components/Button.vue';
+import Input from '../design-system/components/Input.vue';
 
 const props = defineProps<{
   catteryId?: number;
@@ -137,12 +140,14 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <div class="cat-form">
-    <h2>Ajouter un nouveau chat</h2>
+  <Card class="cat-form" variant="primary" shadow="md" padding="lg">
+    <template #header>
+      <h2>Ajouter un nouveau chat</h2>
+    </template>
 
-    <div v-if="loofError" class="error-message">
+    <div v-if="loofError" class="bg-error error-message">
       <span class="error-icon">⚠️</span> {{ loofError }}
-      <button @click="loofStore.fetchAllCharacteristics" class="btn-retry">Réessayer</button>
+      <Button variant="danger" size="sm" @click="loofStore.fetchAllCharacteristics">Réessayer</Button>
     </div>
 
     <div v-if="isLoading" class="loading">
@@ -152,20 +157,30 @@ const submitForm = async () => {
 
     <form @submit.prevent="submitForm" v-else>
       <div class="form-group">
-        <label for="name">Nom :</label>
-        <input id="name" v-model="newCat.name" required placeholder="Entrez le nom de votre chat" />
-        <div v-if="formErrors.name" class="error-text">{{ formErrors.name }}</div>
+        <Input 
+          v-model="newCat.name" 
+          label="Nom :"
+          placeholder="Entrez le nom de votre chat"
+          :error="formErrors.name"
+          required
+          fullWidth
+        />
       </div>
 
       <div class="form-group">
-        <label for="birthDate">Date de Naissance :</label>
-        <input id="birthDate" type="date" v-model="newCat.birthDate" required />
-        <div v-if="formErrors.birthDate" class="error-text">{{ formErrors.birthDate }}</div>
+        <Input 
+          v-model="newCat.birthDate" 
+          type="date"
+          label="Date de Naissance :"
+          :error="formErrors.birthDate"
+          required
+          fullWidth
+        />
       </div>
 
       <div class="form-group">
         <label for="gender">Genre :</label>
-        <select id="gender" v-model="newCat.gender" required>
+        <select id="gender" v-model="newCat.gender" required class="ds-select">
           <option value="">Sélectionnez le genre</option>
           <option value="MALE">Mâle</option>
           <option value="FEMALE">Femelle</option>
@@ -175,7 +190,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <label for="breed">Race :</label>
-        <select id="breed" v-model="selectedBreedId">
+        <select id="breed" v-model="selectedBreedId" class="ds-select">
           <option value="">Sélectionnez la race (optionnel)</option>
           <option v-for="breed in breeds" :key="breed.id" :value="breed.id">
             {{ breed.name }}
@@ -185,7 +200,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <label for="coatColor">Couleur du Pelage :</label>
-        <select id="coatColor" v-model="selectedColorId" required>
+        <select id="coatColor" v-model="selectedColorId" required class="ds-select">
           <option value="">Sélectionnez la couleur du pelage</option>
           <option v-for="color in coatColors" :key="color.id" :value="color.id">
             {{ color.name }}
@@ -196,7 +211,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <label for="coatPattern">Motif du Pelage :</label>
-        <select id="coatPattern" v-model="selectedPatternId" required>
+        <select id="coatPattern" v-model="selectedPatternId" required class="ds-select">
           <option value="">Sélectionnez le motif du pelage</option>
           <option v-for="pattern in coatPatterns" :key="pattern.id" :value="pattern.id">
             {{ pattern.name }}
@@ -207,7 +222,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <label for="coatEffect">Effet du Pelage (optionnel) :</label>
-        <select id="coatEffect" v-model="selectedEffectId">
+        <select id="coatEffect" v-model="selectedEffectId" class="ds-select">
           <option value="">Sélectionnez l'effet du pelage (optionnel)</option>
           <option v-for="effect in coatEffects" :key="effect.id" :value="effect.id">
             {{ effect.name }}
@@ -217,7 +232,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <label for="coatWhiteMarking">Marquage Blanc (optionnel) :</label>
-        <select id="coatWhiteMarking" v-model="selectedWhiteMarkingId">
+        <select id="coatWhiteMarking" v-model="selectedWhiteMarkingId" class="ds-select">
           <option value="">Sélectionnez le marquage blanc (optionnel)</option>
           <option v-for="marking in coatWhiteMarkings" :key="marking.id" :value="marking.id">
             {{ marking.name }}
@@ -225,56 +240,38 @@ const submitForm = async () => {
         </select>
       </div>
 
-      <div v-if="formErrors.general" class="error-message">
+      <div v-if="formErrors.general" class="bg-error error-message">
         {{ formErrors.general }}
       </div>
 
-      <button type="submit" class="btn-submit" :disabled="isLoading">
+      <Button type="submit" variant="primary" :disabled="isLoading" fullWidth>
         <span class="paw-icon">🐾</span> Ajouter un Chat
-      </button>
+      </Button>
     </form>
-  </div>
+  </Card>
 </template>
 
 <style scoped>
 .cat-form {
-  background-color: #093A3E;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #3AAFB9;
+  margin-bottom: var(--space-xl);
 }
 
 .error-message {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .error-icon {
-  margin-right: 0.5rem;
+  margin-right: var(--space-xs);
   font-size: 1.2rem;
-}
-
-.btn-retry {
-  margin-left: auto;
-  background-color: #c62828;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
 }
 
 .loading {
   text-align: center;
-  padding: 2rem;
-  color: #97C8EB;
+  padding: var(--space-xl);
+  color: var(--text-highlight);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -283,11 +280,11 @@ const submitForm = async () => {
 .loading-spinner {
   border: 4px solid rgba(151, 200, 235, 0.3);
   border-radius: 50%;
-  border-top: 4px solid #97C8EB;
+  border-top: 4px solid var(--text-highlight);
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
 
 @keyframes spin {
@@ -296,84 +293,55 @@ const submitForm = async () => {
 }
 
 .error-text {
-  color: #ff6b6b;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
+  color: var(--error);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-xs);
 }
 
 h2 {
-  color: #97C8EB;
-  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
+  margin: 0;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: var(--font-size-lg);
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-md);
 }
 
 label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #c3d8e4;
+  margin-bottom: var(--space-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-dark);
 }
 
-input, select {
+.ds-select {
   width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  padding: var(--space-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input:focus, select:focus {
+.ds-select:focus {
   outline: none;
-  border-color: #97C8EB;
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-}
-
-input::placeholder {
-  color: #b2bec3;
-}
-
-.btn-submit {
-  background-color: #46667b;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 1rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s;
-}
-
-.btn-submit:hover {
-  background-color: #5b4cdb;
+  border-color: var(--secondary-color);
+  box-shadow: var(--shadow-focus);
 }
 
 .paw-icon {
-  margin-right: 0.5rem;
+  margin-right: var(--space-xs);
   font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {
-  .cat-form {
-    padding: 1rem;
-  }
-
   h2 {
-    font-size: 1.3rem;
-  }
-
-  input, select {
-    padding: 0.6rem;
+    font-size: calc(var(--font-size-lg) * 0.85);
   }
 }
 </style>

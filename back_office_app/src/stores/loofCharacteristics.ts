@@ -41,6 +41,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
     try {
       const response = await breedApi.getAllBreeds();
       breeds.value = response.data;
+      console.log('Breeds loaded:', breeds.value);
     } catch (err) {
       console.error('Error loading breeds:', err);
       error.value = 'Failed to load breeds. Please try again.';

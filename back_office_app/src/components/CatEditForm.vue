@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue';
 import { useCatsStore } from '../stores/cats';
 import type { Cat, NewCat } from '../types';
+import Modal from '../design-system/patterns/Modal.vue';
+import Button from '../design-system/components/Button.vue';
+import Input from '../design-system/components/Input.vue';
 
 const props = defineProps<{
   cat: Cat;
@@ -53,184 +56,114 @@ const closeModal = () => {
 </script>
 
 <template>
-  <div v-if="show" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Modifier le Chat</h2>
-        <button class="close-button" @click="closeModal">&times;</button>
+  <Modal v-if="show" title="Modifier le Chat" @close="closeModal">
+    <form @submit.prevent="submitForm">
+      <div class="form-group">
+        <Input 
+          v-model="editedCat.name" 
+          label="Nom :"
+          placeholder="Entrez le nom de votre chat"
+          required
+          fullWidth
+        />
       </div>
 
-      <form @submit.prevent="submitForm">
-        <div class="form-group">
-          <label for="name">Nom :</label>
-          <input id="name" v-model="editedCat.name" required placeholder="Entrez le nom de votre chat" />
-        </div>
+      <div class="form-group">
+        <Input 
+          v-model="editedCat.birthDate" 
+          type="date"
+          label="Date de Naissance :"
+          required
+          fullWidth
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="birthDate">Date de Naissance :</label>
-          <input id="birthDate" type="date" v-model="editedCat.birthDate" required />
-        </div>
+      <div class="form-group">
+        <label for="gender">Genre :</label>
+        <select id="gender" v-model="editedCat.gender" required class="ds-select">
+          <option value="">Sélectionnez le genre</option>
+          <option value="MALE">Mâle</option>
+          <option value="FEMALE">Femelle</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <label for="gender">Genre :</label>
-          <select id="gender" v-model="editedCat.gender" required>
-            <option value="">Sélectionnez le genre</option>
-            <option value="MALE">Mâle</option>
-            <option value="FEMALE">Femelle</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <Input 
+          v-model="editedCat.coat.color" 
+          label="Couleur du Pelage :"
+          placeholder="ex : Orange, Noir, Blanc"
+          required
+          fullWidth
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="coatColor">Couleur du Pelage :</label>
-          <input id="coatColor" v-model="editedCat.coat.color" required placeholder="ex : Orange, Noir, Blanc" />
-        </div>
+      <div class="form-group">
+        <Input 
+          v-model="editedCat.coat.pattern" 
+          label="Motif du Pelage :"
+          placeholder="ex : Tabby, Uni, Calico"
+          required
+          fullWidth
+        />
+      </div>
 
-        <div class="form-group">
-          <label for="coatPattern">Motif du Pelage :</label>
-          <input id="coatPattern" v-model="editedCat.coat.pattern" required placeholder="ex : Tabby, Uni, Calico" />
-        </div>
-
-        <div class="button-group">
-          <button type="button" class="btn-cancel" @click="closeModal">Annuler</button>
-          <button type="submit" class="btn-submit">Mettre à Jour le Chat</button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <div class="button-group">
+        <Button type="button" variant="secondary" @click="closeModal">Annuler</Button>
+        <Button type="submit" variant="primary">Mettre à Jour le Chat</Button>
+      </div>
+    </form>
+  </Modal>
 </template>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal-content {
-  background-color: #093A3E;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #3AAFB9;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #3AAFB9;
-}
-
-.modal-header h2 {
-  color: #97C8EB;
-  margin: 0;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #97C8EB;
-  cursor: pointer;
-}
-
 form {
-  padding: 1.5rem;
+  padding: var(--space-lg);
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--space-md);
 }
 
 label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #c3d8e4;
+  margin-bottom: var(--space-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-dark);
 }
 
-input, select {
+.ds-select {
   width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
+  padding: var(--space-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-input:focus, select:focus {
+.ds-select:focus {
   outline: none;
-  border-color: #97C8EB;
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
-}
-
-input::placeholder {
-  color: #b2bec3;
+  border-color: var(--secondary-color);
+  box-shadow: var(--shadow-focus);
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.btn-cancel {
-  background-color: #64748b;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.btn-submit {
-  background-color: #46667b;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.btn-cancel:hover {
-  background-color: #475569;
-}
-
-.btn-submit:hover {
-  background-color: #5b4cdb;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 @media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
-  }
-
   form {
-    padding: 1rem;
+    padding: var(--space-md);
   }
 
   .button-group {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .btn-cancel, .btn-submit {
-    width: 100%;
+    flex-direction: column-reverse;
+    gap: var(--space-xs);
   }
 }
 </style>

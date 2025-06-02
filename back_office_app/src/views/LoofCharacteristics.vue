@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import PageLayout from '../components/views/PageLayout.vue';
 
 const router = useRouter();
 
@@ -8,52 +9,49 @@ const navigateTo = (path: string) => {
 };
 </script>
 <template>
-  <div class="loof-characteristics-view">
-    <h1>LOOF Characteristics Management</h1>
-    <p class="description">
-      Manage LOOF characteristics for cats, including breeds, coat colors, patterns, effects, white markings, and poly types.
-    </p>
-    
+  <PageLayout 
+    title="Gestion des caractéristiques LOOF"
+    description="Gérez les caractéristiques LOOF pour les chats, incluant les races, couleurs de robe, motifs, effets, marques blanches et types poly."
+  >
     <div class="characteristics-grid">
       <div class="characteristic-card" @click="navigateTo('/loof/breeds')">
-        <h2>Breeds</h2>
-        <p>Manage cat breeds recognized by LOOF</p>
+        <h2>Races</h2>
+        <p>Gérer les races de chats reconnues par le LOOF</p>
         <div class="card-icon">🐱</div>
       </div>
-      
+
       <div class="characteristic-card" @click="navigateTo('/loof/coat-colors')">
-        <h2>Coat Colors</h2>
-        <p>Manage coat colors for cats</p>
+        <h2>Couleurs de robe</h2>
+        <p>Gérer les couleurs de robe des chats</p>
         <div class="card-icon">🎨</div>
       </div>
-      
+
       <div class="characteristic-card" @click="navigateTo('/loof/coat-patterns')">
-        <h2>Coat Patterns</h2>
-        <p>Manage coat patterns for cats</p>
+        <h2>Motifs de robe</h2>
+        <p>Gérer les motifs de robe des chats</p>
         <div class="card-icon">🔄</div>
       </div>
-      
+
       <div class="characteristic-card" @click="navigateTo('/loof/coat-effects')">
-        <h2>Coat Effects</h2>
-        <p>Manage coat effects for cats</p>
+        <h2>Effets de robe</h2>
+        <p>Gérer les effets de robe des chats</p>
         <div class="card-icon">✨</div>
       </div>
-      
+
       <div class="characteristic-card" @click="navigateTo('/loof/coat-white-markings')">
-        <h2>White Markings</h2>
-        <p>Manage coat white markings for cats</p>
+        <h2>Marques blanches</h2>
+        <p>Gérer les marques blanches sur la robe des chats</p>
         <div class="card-icon">⚪</div>
       </div>
-      
+
       <div class="characteristic-card" @click="navigateTo('/loof/poly-types')">
-        <h2>Poly Types</h2>
-        <p>Manage poly types for cats</p>
+        <h2>Types de polydactylie</h2>
+        <p>Gérer les différents types de polydactylie</p>
         <div class="card-icon">👣</div>
       </div>
     </div>
-  </div>
+  </PageLayout>
 </template>
-
 
 <style scoped>
 .loof-characteristics-view {
@@ -124,11 +122,11 @@ h1 {
   .loof-characteristics-view {
     padding: 1rem;
   }
-  
+
   h1 {
     font-size: 1.5rem;
   }
-  
+
   .characteristics-grid {
     grid-template-columns: 1fr;
   }

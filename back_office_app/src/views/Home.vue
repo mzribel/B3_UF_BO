@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const navigateTo = (route: string) => {
-  router.push(route);
-};
+import DashboardCard from '../components/views/DashboardCard.vue';
 </script>
 
 <template>
   <div class="home">
     <h1>Système de Gestion de Chats</h1>
+    <p class="home-description">Bienvenue dans le système de gestion de chats. Sélectionnez une option ci-dessous pour commencer.</p>
+
     <div class="card-container">
-      <div class="card" @click="navigateTo('/cats')">
-        <h2>Chats</h2>
-        <p>Gérer vos chats</p>
-      </div>
-      <div class="card" @click="navigateTo('/users')">
-        <h2>Utilisateurs</h2>
-        <p>Gérer les utilisateurs</p>
-      </div>
-      <div class="card" @click="navigateTo('/register')">
-        <h2>Inscription</h2>
-        <p>Inscrire un nouvel utilisateur</p>
-      </div>
+      <DashboardCard 
+        title="Chatteries" 
+        description="Gérez les chatteries, leurs éleveurs et leurs chats. Ajoutez, modifiez ou supprimez des chatteries."
+        route="/catteries"
+      />
+
+      <DashboardCard 
+        title="Utilisateurs" 
+        description="Gérez les utilisateurs du système. Ajoutez, modifiez ou supprimez des comptes utilisateurs."
+        route="/users"
+      />
+
+      <DashboardCard 
+        title="Caractéristiques LOOF" 
+        description="Gérez les caractéristiques LOOF comme les races, couleurs, motifs et effets de pelage."
+        route="/loof"
+      />
     </div>
   </div>
 </template>
@@ -33,43 +33,38 @@ const navigateTo = (route: string) => {
 .home {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: var(--space-xl);
   text-align: center;
 }
 
 h1 {
-  margin-bottom: 2rem;
-  color: #42b883;
+  color: var(--primary-color);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-lg);
+}
+
+.home-description {
+  color: var(--text-muted);
+  margin-bottom: var(--space-xl);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: var(--space-xl);
   flex-wrap: wrap;
 }
 
-.card {
-  background-color: #f8f8f8;
-  border-radius: 8px;
-  padding: 1.5rem;
-  width: 250px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
+@media (max-width: 768px) {
+  .home {
+    padding: var(--space-md);
+  }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-h2 {
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-p {
-  color: #666;
+  .card-container {
+    gap: var(--space-lg);
+  }
 }
 </style>

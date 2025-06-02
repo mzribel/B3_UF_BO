@@ -1,13 +1,11 @@
 <template>
-  <div class="loof-poly-types-view">
-    <h1>Poly Type Management</h1>
-    <p class="description">
-      Manage poly types recognized by LOOF. These types are used when creating and updating cats.
-    </p>
-    
+  <PageLayout 
+    title="Gestion des types de polydactylie"
+    description="Gérez les types de polydactylie reconnus par le LOOF. Ces types sont utilisés lors de la création et de la mise à jour des chats."
+  >
     <LoofCharacteristicsList
-      title="Poly Types"
-      singularTitle="Poly Type"
+      title="Types de polydactylie"
+      singularTitle="un type de polydactylie"
       :items="polyTypes"
       :loading="loading"
       :error="error"
@@ -18,13 +16,14 @@
       @update="updatePolyType"
       @delete="deletePolyType"
     />
-  </div>
+  </PageLayout>
 </template>
 
 <script setup lang="ts">
 import { onMounted, computed } from 'vue';
 import { useLoofCharacteristicsStore } from '../stores/loofCharacteristics';
 import LoofCharacteristicsList from '../components/LoofCharacteristicsList.vue';
+import PageLayout from '../components/views/PageLayout.vue';
 import type { NewPolyType } from '../types';
 
 // Store
@@ -55,35 +54,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.loof-poly-types-view {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-h1 {
-  color: #6c5ce7;
-  margin-bottom: 1rem;
-  text-align: center;
-  font-size: 2rem;
-}
-
-.description {
-  text-align: center;
-  color: #636e72;
-  margin-bottom: 2rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (max-width: 768px) {
-  .loof-poly-types-view {
-    padding: 1rem;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-  }
-}
+/* All styling is handled by the PageLayout component */
 </style>

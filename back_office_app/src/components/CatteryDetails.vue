@@ -6,6 +6,8 @@ import { useBreederStore } from '../stores/breeder';
 import { useRouter } from 'vue-router';
 import CatList from './CatList.vue';
 import BreederForm from './BreederForm.vue';
+import Card from '../design-system/components/Card.vue';
+import Button from '../design-system/components/Button.vue';
 
 const props = defineProps<{
   catteryId: number;
@@ -69,23 +71,23 @@ onMounted(fetchCatteryData);
 </script>
 
 <template>
-  <div class="cattery-details">
+  <Card class="cattery-details" variant="default" shadow="md" padding="lg">
     <div v-if="loading" class="loading">
       <div class="loading-spinner"></div>
       <p>Chargement des détails de la chatterie...</p>
     </div>
 
-    <div v-else-if="error" class="error-message">
+    <div v-else-if="error" class="bg-error error-message">
       <span class="error-icon">⚠️</span> {{ error }}
-      <button class="btn-retry" @click="fetchCatteryData">Réessayer</button>
+      <Button variant="danger" size="sm" @click="fetchCatteryData">Réessayer</Button>
     </div>
 
     <div v-else-if="cattery" class="cattery-content">
       <div class="header">
-        <button class="btn-back" @click="goBack">← Retour aux Chatteries</button>
+        <Button variant="secondary" @click="goBack">← Retour aux Chatteries</Button>
         <h2>{{ cattery.name }}</h2>
         <div class="actions">
-          <button class="btn-delete" @click="deleteCattery">Supprimer la Chatterie</button>
+          <Button variant="danger" @click="deleteCattery">Supprimer la Chatterie</Button>
         </div>
       </div>
 
@@ -199,7 +201,7 @@ onMounted(fetchCatteryData);
       <p>La chatterie que vous recherchez n'existe pas ou vous n'avez pas la permission de la consulter.</p>
       <button class="btn-back" @click="goBack">Retour aux Chatteries</button>
     </div>
-  </div>
+  </Card>
 
   <BreederForm 
     :catteryId="catteryId" 

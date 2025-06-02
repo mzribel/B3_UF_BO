@@ -2,7 +2,6 @@
 import { useRoute } from 'vue-router';
 import CatteryDetails from '../components/CatteryDetails.vue';
 
-// Get cattery ID from route params
 const route = useRoute();
 const catteryId = Number(route.params.id);
 </script>

@@ -1,29 +1,31 @@
 import { defineStore } from 'pinia';
 import { authApi } from '../services/api';
 import axios from 'axios';
+import parseJwt from "../services/jwtParser.ts";
 
 interface User {
   id: number;
   email: string;
   displayName?: string;
-  isAdmin: boolean;
 }
 
 interface AuthState {
   token: string | null;
   user: User | null;
   isAuthenticated: boolean;
+  adminState?: boolean;
 }
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     token: localStorage.getItem('token'),
     user: JSON.parse(localStorage.getItem('user') || 'null'),
-    isAuthenticated: !!localStorage.getItem('token')
+    isAuthenticated: !!localStorage.getItem('token'),
+    adminState: parseJwt(localStorage.getItem('token') || '')?.admin || false
   }),
   
   getters: {
-    isAdmin: (state) => state.user?.isAdmin || false,
+    isAdmin: (state) => state.adminState,
     getToken: (state) => state.token
   },
   
