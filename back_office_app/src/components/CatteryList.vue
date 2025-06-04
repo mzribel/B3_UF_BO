@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useCatteriesStore } from '../stores/catteries';
-import { Cattery } from '../types';
 import { useRouter } from 'vue-router';
 import Button from '../design-system/components/Button.vue';
 import Card from '../design-system/components/Card.vue';
+import {useUsersStore} from "../stores/users.ts";
 
 const router = useRouter();
 
 const catteriesStore = useCatteriesStore();
+const userStore = useUsersStore();
 
 const catteries = computed(() => catteriesStore.catteries);
 const loading = computed(() => catteriesStore.loading);
@@ -59,22 +60,20 @@ const createNewCattery = () => {
             <th>Nom</th>
             <th>Éleveur</th>
             <th>Membres</th>
-            <th>Chats</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="cattery in catteries" :key="cattery.id" class="cattery-row">
             <td>{{ cattery.id }}</td>
-            <td class="cattery-name">{{ cattery.name }}</td>
+            <td class="cattery-name">{{ cattery.linkedBreeder.name }}</td>
             <td>
-              <span v-if="cattery.breeder">
-                {{ cattery.breeder.firstName }} {{ cattery.breeder.lastName }}
+              <span v-if="cattery.linkedBreeder.ownerId">
+                {{ userStore.sortedUsers.find(user => user.id === cattery.linkedBreeder.ownerId)?.displayName || 'Inconnu' }}
               </span>
               <span v-else>-</span>
             </td>
             <td>{{ cattery.members?.length || 0 }}</td>
-            <td>{{ cattery.cats?.length || 0 }}</td>
             <td class="actions">
               <Button variant="info" size="sm" @click="viewCatteryDetails(cattery.id)">Voir</Button>
               <Button variant="danger" size="sm" @click="deleteCattery(cattery.id)">Supprimer</Button>

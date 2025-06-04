@@ -5,8 +5,10 @@ import type { Cat } from '../types';
 import CatEditForm from './CatEditForm.vue';
 import Button from '../design-system/components/Button.vue';
 import Card from '../design-system/components/Card.vue';
+import {useLoofCharacteristicsStore} from "../stores/loofCharacteristics.ts";
 
 const catsStore = useCatsStore();
+const loofCharacteristicsStore = useLoofCharacteristicsStore();
 
 const cats = computed(() => catsStore.cats);
 const loading = computed(() => catsStore.loading);
@@ -73,8 +75,12 @@ const deleteCat = async (id: number) => {
             <td class="cat-name">{{ cat.name }}</td>
             <td>{{ formatDate(cat.birthDate) }}</td>
             <td>{{ getGenderDisplay(cat.gender) }}</td>
-            <td>{{ cat.coat?.color || '-' }}</td>
-            <td>{{ cat.coat?.pattern || '-' }}</td>
+            <td>
+              {{ loofCharacteristicsStore.coatColors.find(color => color.id === cat.coat?.colorId)?.name || '-' }}
+            </td>
+            <td>
+              {{ loofCharacteristicsStore.coatPatterns.find(pattern => pattern.id === cat.coat?.patternId)?.name || '-' }}
+            </td>
             <td class="actions">
               <Button variant="info" size="sm" @click="openEditModal(cat)">Modifier</Button>
               <Button variant="danger" size="sm" @click="deleteCat(cat.id)">Supprimer</Button>

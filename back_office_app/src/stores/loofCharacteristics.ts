@@ -41,10 +41,9 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
     try {
       const response = await breedApi.getAllBreeds();
       breeds.value = response.data;
-      console.log('Breeds loaded:', breeds.value);
     } catch (err) {
       console.error('Error loading breeds:', err);
-      error.value = 'Failed to load breeds. Please try again.';
+      error.value = 'Erreur lors du chargement des races LOOF. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -59,7 +58,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       coatColors.value = response.data;
     } catch (err) {
       console.error('Error loading coat colors:', err);
-      error.value = 'Failed to load coat colors. Please try again.';
+      error.value = 'Impossible de charger les couleurs de pelage. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -74,7 +73,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       coatEffects.value = response.data;
     } catch (err) {
       console.error('Error loading coat effects:', err);
-      error.value = 'Failed to load coat effects. Please try again.';
+      error.value = 'Impossible de charger les effets de pelage. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -89,7 +88,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       coatPatterns.value = response.data;
     } catch (err) {
       console.error('Error loading coat patterns:', err);
-      error.value = 'Failed to load coat patterns. Please try again.';
+      error.value = 'Impossible de charger les motifs de pelage. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -104,7 +103,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       coatWhiteMarkings.value = response.data;
     } catch (err) {
       console.error('Error loading coat white markings:', err);
-      error.value = 'Failed to load coat white markings. Please try again.';
+      error.value = 'Impossible de charger les marques blanches de pelage. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -119,7 +118,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       polyTypes.value = response.data;
     } catch (err) {
       console.error('Error loading poly types:', err);
-      error.value = 'Failed to load poly types. Please try again.';
+      error.value = 'Impossible de charger les types de polydactylies. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -135,7 +134,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating breed:', err);
-      error.value = 'Failed to create breed. Please try again.';
+      error.value = 'Impossible de créer une race de chat. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -152,7 +151,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating breed ${id}:`, err);
-      error.value = 'Failed to update breed. Please try again.';
+      error.value = 'Impossible de mettre à jour la race de chat. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -169,7 +168,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting breed ${id}:`, err);
-      error.value = 'Failed to delete breed. Please try again.';
+      error.value = 'Erreur lors de la suppression de la race de chat. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -186,7 +185,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating coat color:', err);
-      error.value = 'Failed to create coat color. Please try again.';
+      error.value = 'Echec de la création de la couleur de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -203,7 +202,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating coat color ${id}:`, err);
-      error.value = 'Failed to update coat color. Please try again.';
+      error.value = 'Echec de la mise à jour de la couleur de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -220,7 +219,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting coat color ${id}:`, err);
-      error.value = 'Failed to delete coat color. Please try again.';
+      error.value = 'Echec de la suppression de la couleur de pelage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -237,7 +236,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating coat effect:', err);
-      error.value = 'Failed to create coat effect. Please try again.';
+      error.value = 'Impossible de créer l\'effet de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -254,7 +253,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating coat effect ${id}:`, err);
-      error.value = 'Failed to update coat effect. Please try again.';
+      error.value = 'Impossible de mettre à jour l\'effet de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -271,7 +270,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting coat effect ${id}:`, err);
-      error.value = 'Failed to delete coat effect. Please try again.';
+      error.value = 'Echec de la suppression de l\'effet de pelage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -288,7 +287,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating coat pattern:', err);
-      error.value = 'Failed to create coat pattern. Please try again.';
+      error.value = 'Erreur lors de la création du motif de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -305,7 +304,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating coat pattern ${id}:`, err);
-      error.value = 'Failed to update coat pattern. Please try again.';
+      error.value = 'Echec de la mise à jour du motif de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -322,7 +321,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting coat pattern ${id}:`, err);
-      error.value = 'Failed to delete coat pattern. Please try again.';
+      error.value = 'Echec de la suppression du motif de pelage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -339,7 +338,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating coat white marking:', err);
-      error.value = 'Failed to create coat white marking. Please try again.';
+      error.value = 'Echec de la création de la marque blanche de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -356,7 +355,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating coat white marking ${id}:`, err);
-      error.value = 'Failed to update coat white marking. Please try again.';
+      error.value = 'Echec de la mise à jour de la marque blanche de pelage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -373,7 +372,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting coat white marking ${id}:`, err);
-      error.value = 'Failed to delete coat white marking. Please try again.';
+      error.value = 'Echec de la suppression de la marque blanche de pelage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -390,7 +389,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error('Error creating poly type:', err);
-      error.value = 'Failed to create poly type. Please try again.';
+      error.value = 'Echec de la création du type de polydactylie. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -407,7 +406,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return response.data;
     } catch (err) {
       console.error(`Error updating poly type ${id}:`, err);
-      error.value = 'Failed to update poly type. Please try again.';
+      error.value = 'Impossible de mettre à jour le type de polydactylie. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -424,7 +423,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       return true;
     } catch (err) {
       console.error(`Error deleting poly type ${id}:`, err);
-      error.value = 'Failed to delete poly type. Please try again.';
+      error.value = 'Echec de la suppression du type de polydactylie. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -446,7 +445,7 @@ export const useLoofCharacteristicsStore = defineStore('loofCharacteristics', ()
       ]);
     } catch (err) {
       console.error('Error loading LOOF characteristics:', err);
-      error.value = 'Failed to load LOOF characteristics. Please try again.';
+      error.value = 'Erreur lors du chargement des caractéristiques LOOF. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }

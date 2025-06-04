@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import NavBar from './components/NavBar.vue'
+import SidebarNav from './components/SidebarNav.vue'
 import { useAuthStore } from './stores/auth';
 import { onMounted } from 'vue';
 
@@ -13,96 +13,77 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="app">
-    <header>
-      <NavBar />
-    </header>
+  <div class="app-layout" :class="{ 'guest-layout': !authStore.isAuthenticated }">
+    <SidebarNav v-if="authStore.isAuthenticated" />
 
-    <main>
-      <RouterView />
-    </main>
-
-    <footer>
-      <p>&copy; {{ new Date().getFullYear() }} Cat Management System</p>
-    </footer>
+    <div class="main-content-wrapper">
+      <main class="main-content">
+        <RouterView />
+      </main>
+<!--      TODO : Uncomment footer if needed -->
+<!--      <footer v-if="authStore.isAuthenticated">-->
+<!--        <p>&copy; {{ new Date().getFullYear() }} Cat Management System</p>-->
+<!--      </footer>-->
+    </div>
   </div>
 </template>
 
 <style>
-/* Global styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  background-color: var(--app-bg);
 }
 
-/* App layout */
-.app {
+.main-content-wrapper {
+  width: 100%;
+  height: 100vh;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  overflow-y: auto;
+  background-color: var(--app-bg);
 }
 
-/* Header styles */
-header {
-  background-color: var(--bg-header);
-  color: var(--text-highlight);
-  padding: var(--space-md) var(--space-xl);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--radius-md);
+.main-content {
+  flex-grow: 1;
+  padding: var(--space-lg);
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+.guest-layout {
+  display: block;
 }
 
-.logo a {
-  color: var(--primary-light);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  text-decoration: none;
+.guest-layout .main-content-wrapper {
+  width: 100%;
+  max-width: 700px; /* Largeur pour le formulaire de connexion */
+  min-height: 100vh; /* Prend toute la hauteur */
+  margin: 0 auto; /* Centre horizontalement */
+  display: flex; /* Utilise flex pour centrer verticalement .main-content */
+  flex-direction: column;
+  justify-content: center; /* Centre verticalement */
+  padding: var(--space-md); /* Un peu d'espace autour si la fenêtre est très petite */
 }
 
-.nav-links {
-  display: flex;
-  list-style: none;
+.guest-layout .main-content {
+  padding: var(--space-xl) var(--space-lg);
+  background-color: var(--card-bg); /* Fond de carte pour le formulaire */
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 100%; /* Prend toute la largeur du wrapper */
 }
 
-.nav-links li {
-  margin-left: var(--space-lg);
+.guest-layout footer {
+ display: none; /* Cache le footer sur la page de connexion */
 }
 
-.nav-links a {
-  color: var(--secondary-light);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: opacity 0.3s;
-}
-
-.nav-links a:hover {
-  opacity: 0.8;
-}
-
-.nav-links a.router-link-active {
-  border-bottom: 2px solid var(--border-active);
-}
-
-/* Main content */
-main {
-  flex: 1;
-  padding: var(--space-xl);
-}
-
-/* Footer styles */
 footer {
-  background-color: var(--bg-footer);
-  color: var(--text-highlight);
+  background-color: var(--topbar-bg); /* Ou var(--app-bg) si vous préférez */
+  color: var(--text-secondary);
   text-align: center;
-  padding: var(--space-md);
-  margin-top: auto;
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border-color);
+  width: 100%; /* Assure que le footer prend toute la largeur du main-content-wrapper */
 }
 </style>

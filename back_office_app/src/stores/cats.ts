@@ -18,7 +18,7 @@ export const useCatsStore = defineStore('cats', () => {
       cats.value = response.data;
     } catch (err) {
       console.error('Error loading cats:', err);
-      error.value = 'Failed to load cats. Please try again.';
+      error.value = 'Erreur lors du chargement des chats. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -34,7 +34,7 @@ export const useCatsStore = defineStore('cats', () => {
       return true;
     } catch (err) {
       console.error('Error creating cat:', err);
-      error.value = 'Failed to create cat. Please try again.';
+      error.value = 'Echec de la création du chat. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -51,7 +51,7 @@ export const useCatsStore = defineStore('cats', () => {
       return true;
     } catch (err) {
       console.error('Error updating cat:', err);
-      error.value = 'Failed to update cat. Please try again.';
+      error.value = 'Echec de la mise à jour du chat. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -68,7 +68,7 @@ export const useCatsStore = defineStore('cats', () => {
       return true;
     } catch (err) {
       console.error('Error deleting cat:', err);
-      error.value = 'Failed to delete cat. Please try again.';
+      error.value = 'Impossible de supprimer le chat. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -84,7 +84,7 @@ export const useCatsStore = defineStore('cats', () => {
       cats.value = response.data;
     } catch (err) {
       console.error(`Error loading cats for cattery ${catteryId}:`, err);
-      error.value = 'Failed to load cats for this cattery. Please try again.';
+      error.value = 'Erreur lors du chargement des chats pour la chatterie. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }

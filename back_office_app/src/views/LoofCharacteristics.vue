@@ -54,11 +54,6 @@ const navigateTo = (path: string) => {
 </template>
 
 <style scoped>
-.loof-characteristics-view {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
 
 h1 {
   color: #6c5ce7;
@@ -67,19 +62,11 @@ h1 {
   font-size: 2rem;
 }
 
-.description {
-  text-align: center;
-  color: #636e72;
-  margin-bottom: 2rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .characteristics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+  padding: var(--space-lg);
 }
 
 .characteristic-card {
@@ -119,16 +106,13 @@ h1 {
 }
 
 @media (max-width: 768px) {
-  .loof-characteristics-view {
-    padding: 1rem;
-  }
-
   h1 {
     font-size: 1.5rem;
   }
 
   .characteristics-grid {
     grid-template-columns: 1fr;
+    padding: var(--space-md);
   }
 }
 </style>

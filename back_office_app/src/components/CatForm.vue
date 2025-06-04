@@ -28,10 +28,10 @@ const newCat = ref<NewCat>({
   birthDate: '',
   gender: '',
   coat: {
-    color: '',
-    pattern: '',
-    effect: '',
-    whiteMarking: ''
+    colorId: 1,
+    patternId: undefined,
+    effectId: undefined,
+    whiteMarkingId: undefined
   },
   breedId: undefined
 });
@@ -102,10 +102,10 @@ const submitForm = async () => {
   const selectedWhiteMarking = selectedWhiteMarkingId.value ? 
     coatWhiteMarkings.value.find(marking => marking.id === selectedWhiteMarkingId.value) : null;
 
-  newCat.value.coat.color = selectedColor ? selectedColor.name : '';
-  newCat.value.coat.pattern = selectedPattern ? selectedPattern.name : '';
-  newCat.value.coat.effect = selectedEffect ? selectedEffect.name : '';
-  newCat.value.coat.whiteMarking = selectedWhiteMarking ? selectedWhiteMarking.name : '';
+  newCat.value.coat.colorId = selectedColor ? selectedColor.id : 1;
+  newCat.value.coat.patternId = selectedPattern ? selectedPattern.id : undefined;
+  newCat.value.coat.effectId = selectedEffect ? selectedEffect.id : undefined;
+  newCat.value.coat.whiteMarkingId = selectedWhiteMarking ? selectedWhiteMarking.id : undefined;
   newCat.value.breedId = selectedBreedId.value || undefined;
 
   const success = await catsStore.addCat(catteryId.value!, newCat.value);
@@ -116,10 +116,10 @@ const submitForm = async () => {
       birthDate: '',
       gender: '',
       coat: {
-        color: '',
-        pattern: '',
-        effect: '',
-        whiteMarking: ''
+        colorId: 1,
+        patternId: undefined,
+        effectId: undefined,
+        whiteMarkingId: undefined
       },
       breedId: undefined
     };

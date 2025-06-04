@@ -56,7 +56,9 @@ export const catApi = {
 
 export const userApi = {
   getAllUsers: () => api.get<User[]>('/users'),
-  getUserById: (userId: number) => api.get<User>(`/users/${userId}`)
+  getUserById: (userId: number) => api.get<User>(`/users/${userId}`),
+  promoteUserToAdmin: (userId: number) => api.patch(`/users/${userId}/admin/promote`),
+  demoteUserFromAdmin: (userId: number) => api.patch(`/users/${userId}/admin/demote`),
 };
 
 export const authApi = {

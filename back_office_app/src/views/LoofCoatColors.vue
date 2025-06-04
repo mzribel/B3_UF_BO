@@ -33,8 +33,8 @@ onMounted(() => {
     description="Gérez les couleurs de robe reconnues par le LOOF. Ces couleurs sont utilisées lors de la création et de la mise à jour des chats."
   >
     <LoofCharacteristicsList
-      title="Coat Colors"
-      singularTitle="Coat Color"
+      title="Couleurs de pelage"
+      singularTitle="une couleur de pelage"
       :items="coatColors"
       :loading="loading"
       :error="error"

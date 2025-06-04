@@ -19,7 +19,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       catteries.value = response.data;
     } catch (err) {
       console.error('Error loading catteries:', err);
-      error.value = 'Failed to load catteries. Please try again.';
+      error.value = 'Erreur lors du chargement des chatteries. Veuillez réessayer.';
     } finally {
       loading.value = false;
     }
@@ -35,7 +35,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       return response.data;
     } catch (err) {
       console.error(`Error loading cattery with id ${id}:`, err);
-      error.value = 'Failed to load cattery details. Please try again.';
+      error.value = 'Erreur lors du chargement de la chatterie. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -52,7 +52,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       return response.data;
     } catch (err) {
       console.error('Error creating cattery:', err);
-      error.value = 'Failed to create cattery. Please try again.';
+      error.value = 'Impossible de créer la chatterie. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -69,7 +69,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       return true;
     } catch (err) {
       console.error('Error deleting cattery:', err);
-      error.value = 'Failed to delete cattery. Please try again.';
+      error.value = 'Impossible de supprimer la chatterie. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -88,7 +88,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       return true;
     } catch (err) {
       console.error('Error adding user to cattery:', err);
-      error.value = 'Failed to add user to cattery. Please try again.';
+      error.value = 'Impossible d\'ajouter l\'utilisateur à la chatterie. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -107,7 +107,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
       return true;
     } catch (err) {
       console.error('Error removing user from cattery:', err);
-      error.value = 'Failed to remove user from cattery. Please try again.';
+      error.value = 'Impossible de retirer l\'utilisateur de la chatterie. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;

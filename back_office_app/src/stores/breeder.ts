@@ -19,7 +19,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return response.data;
     } catch (err) {
       console.error(`Error loading breeder for cattery ${catteryId}:`, err);
-      error.value = 'Failed to load breeder information. Please try again.';
+      error.value = 'Erreur lors du chargement de l\'élevage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -36,7 +36,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return true;
     } catch (err) {
       console.error(`Error updating breeder for cattery ${catteryId}:`, err);
-      error.value = 'Failed to update breeder information. Please try again.';
+      error.value = 'Erreur lors de la mise à jour de l\'élevage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;
@@ -52,7 +52,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return response.data;
     } catch (err) {
       console.error(`Error loading contact breeders for cattery ${catteryId}:`, err);
-      error.value = 'Failed to load contact breeders. Please try again.';
+      error.value = 'Impossible de charger les caractéristiques de l\'élevage. Veuillez réessayer.';
       return [];
     } finally {
       loading.value = false;
@@ -68,7 +68,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return response.data;
     } catch (err) {
       console.error(`Error creating contact breeder for cattery ${catteryId}:`, err);
-      error.value = 'Failed to create contact breeder. Please try again.';
+      error.value = 'Impossible de créer les caractéristiques de l\'élevage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -84,7 +84,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return response.data;
     } catch (err) {
       console.error(`Error updating contact breeder ${breederId} for cattery ${catteryId}:`, err);
-      error.value = 'Failed to update contact breeder. Please try again.';
+      error.value = 'Impossible de mettre à jour les caractéristiques de l\'élevage. Veuillez réessayer.';
       return null;
     } finally {
       loading.value = false;
@@ -100,7 +100,7 @@ export const useBreederStore = defineStore('breeder', () => {
       return true;
     } catch (err) {
       console.error(`Error deleting contact breeder ${breederId} for cattery ${catteryId}:`, err);
-      error.value = 'Failed to delete contact breeder. Please try again.';
+      error.value = 'Impossible de supprimer les caractéristiques de l\'élevage. Veuillez réessayer.';
       return false;
     } finally {
       loading.value = false;

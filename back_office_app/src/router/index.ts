@@ -92,13 +92,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/design-system',
     name: 'DesignSystem',
     component: () => import('../design-system/documentation/Showcase.vue'),
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   },
   {
     path: '/design-system-test',
     name: 'DesignSystemTest',
     component: () => import('../views/DesignSystemTest.vue'),
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   }
 ];
 
@@ -107,6 +107,7 @@ const router = createRouter({
   routes
 });
 
+// @ts-ignore
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
 

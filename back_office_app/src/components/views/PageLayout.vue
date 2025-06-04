@@ -20,11 +20,11 @@ const props = defineProps({
   },
   cardShadow: {
     type: String,
-    default: 'md'
+    default: 'none'
   },
   cardPadding: {
     type: String,
-    default: 'lg'
+    default: 'none'
   }
 });
 </script>
@@ -36,9 +36,9 @@ const props = defineProps({
     
     <Card 
       v-if="useCard" 
-      class="content-card" 
-      :variant="cardVariant" 
-      :shadow="cardShadow" 
+      class="content-card"
+      :variant="cardVariant"
+      :shadow="cardShadow"
       :padding="cardPadding"
     >
       <slot></slot>
@@ -52,13 +52,12 @@ const props = defineProps({
 
 <style scoped>
 .page-layout {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-md);
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
-  color: var(--primary-color);
+  color: var(--h1-color);
   margin-bottom: var(--space-md);
   text-align: center;
   font-size: calc(var(--font-size-lg) * 1.3);

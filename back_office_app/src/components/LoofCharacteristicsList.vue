@@ -64,14 +64,14 @@ const formData = ref<{
 }>({
   name: '',
   code: '',
-  description: ''
+  details: ''
 });
 
 const openCreateForm = () => {
   formData.value = {
     name: '',
     code: '',
-    description: ''
+    details: ''
   };
   isEditing.value = false;
   showForm.value = true;
@@ -82,7 +82,7 @@ const openEditForm = (item: LoofCharacteristic) => {
     id: item.id,
     name: item.name,
     code: item.code || '',
-    description: item.description || ''
+    details: item.details || ''
   };
   isEditing.value = true;
   showForm.value = true;
@@ -131,7 +131,7 @@ const deleteItem = async (id: number) => {
     </div>
 
     <div v-else-if="!hasItems" class="no-items">
-      <p>Aucun éléments trouvé. Créez votre premier {{ singularTitle.toLowerCase() }} pour commencer !</p>
+      <p>Aucun éléments trouvé. Créez votre premier {{ title.toLowerCase() }} pour commencer !</p>
       <div class="item-emoji">{{ emptyStateEmoji }}</div>
     </div>
 
@@ -178,6 +178,7 @@ const deleteItem = async (id: number) => {
             v-model="formData.code" 
             label="Code"
             placeholder="Entrez le code"
+            required
             fullWidth
           />
         </div>

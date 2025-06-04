@@ -1,43 +1,86 @@
 
 // Cat related interfaces
 export interface Coat {
-  color: string;
-  pattern: string;
-  effect?: string;
-  whiteMarking?: string;
+  colorId: number;
+  patternId?: number;
+  effectId?: number;
+  whiteMarkingId?: number;
 }
 
 export interface Cat {
   id: number;
   name: string;
-  birthDate: string;
-  gender: string;
-  coat: Coat;
-  breedId?: number;
-  catteryId?: number;
+  surname: string;
+  isFemale: boolean;
+  coat: {
+    breed: string;
+    color: string;
+    code: string;
+    eyes?: string | null;
+    polydactylism?: string | null;
+  };
+  litter: {
+    litterId: number;
+    birthDate: string;
+    sireId: number;
+    damId: number;
+    originBreeder: {
+      id: number;
+      affix: string;
+      isAffixSuffix: boolean;
+    };
+  };
+  pedigreeNumber: string;
+  identificationNumber: string;
+  isDeceased: boolean;
+  deceasedDate?: string | null;
+  isNeutered: boolean;
+  neuteredDate?: string | null;
+  notes?: string | null;
+  createdByCatteryId: number;
 }
 
 export interface NewCat {
   name: string;
-  birthDate: string;
-  gender: string;
-  coat: Coat;
-  breedId?: number;
+  surname: string;
+  isFemale: boolean;
+  coat: {
+    breed: string;
+    color: string;
+    code: string;
+    eyes?: string | null;
+    polydactylism?: string | null;
+  };
+  litter: {
+    litterId: number;
+    birthDate: string;
+    sireId: number;
+    damId: number;
+    originBreeder: {
+      id: number;
+      affix: string;
+      isAffixSuffix: boolean;
+    };
+  };
+  pedigreeNumber: string;
+  identificationNumber: string;
+  isDeceased: boolean;
+  deceasedDate?: string | null;
+  isNeutered: boolean;
+  neuteredDate?: string | null;
+  notes?: string | null;
+  createdByCatteryId: number;
 }
 
 export interface CatDetails extends Cat {
-  breed?: Breed;
-  cattery?: Cattery;
-  healthLogs?: HealthLog[];
+  // Ajoutez ici des propriétés supplémentaires si nécessaire
 }
-
 // User related interfaces
 export interface User {
   id: number;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
+  displayName: string;
+  admin: boolean;
 }
 
 export interface NewUser {
@@ -60,20 +103,25 @@ export interface AuthResponse {
 // Breeder related interfaces
 export interface Breeder {
   id: number;
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phone?: string;
-  address?: Address;
-  catteryId?: number;
+  name: string;
+  siret: string;
+  affix: string;
+  isAffixPrefix: boolean;
+  ownerId: number;
+  addressId: number;
+  createdByCatteryId: number;
+  isActive: boolean;
+  isDerogatory: boolean;
 }
 
 export interface NewBreeder {
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phone?: string;
-  address?: Address;
+  catteryId?: number;
+  name: string;
+  siret: string;
+  affix: string;
+  isAffixPrefix: boolean;
+  isActive?: boolean;
+  isDerogatory?: boolean;
 }
 
 export interface UpdateBreeder extends NewBreeder {
@@ -91,10 +139,10 @@ export interface Address {
 // Cattery related interfaces
 export interface Cattery {
   id: number;
-  name: string;
-  breeder?: Breeder;
-  members?: User[];
-  cats?: Cat[];
+  createdByUser: User;
+  linkedBreeder: Breeder;
+  members: User[];
+
 }
 
 export interface NewCattery {
