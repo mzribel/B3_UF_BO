@@ -92,7 +92,9 @@ export const catteryApi = {
     api.post(`/catteries/${catteryId}/members`, userData),
   removeUserFromCattery: (catteryId: number, userId: number) => 
     api.delete(`/catteries/${catteryId}/members/${userId}`),
-  getUserCatteries: (userId: number) => api.get(`/users/${userId}/catteries`)
+  getUserCatteries: (userId: number) => api.get(`/users/${userId}/catteries`),
+  promoteUserToCatteryAdmin: (catteryId: number, userId: number) => api.patch(`/catteries/${catteryId}/members/${userId}/promote`)
+
 };
 
 export const healthLogApi = {

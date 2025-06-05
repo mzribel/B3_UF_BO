@@ -22,8 +22,8 @@ const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString();
 };
 
-const getGenderDisplay = (gender: string): string => {
-  return gender === 'MALE' ? 'Mâle' : gender === 'FEMALE' ? 'Femelle' : gender;
+const getGenderDisplay = (isFemale: boolean): string => {
+  return isFemale ? 'Femelle' : 'Mâle';
 };
 
 const openEditModal = (cat: Cat) => {
@@ -60,29 +60,33 @@ const deleteCat = async (id: number) => {
       <table class="cats-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nom</th>
             <th>Date de Naissance</th>
             <th>Genre</th>
-            <th>Couleur du Pelage</th>
-            <th>Motif du Pelage</th>
-            <th>Actions</th>
+            <th>Pedigree</th>
+            <th>État</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="cat in cats" :key="cat.id" class="cat-row">
-            <td>{{ cat.id }}</td>
-            <td class="cat-name">{{ cat.name }}</td>
-            <td>{{ formatDate(cat.birthDate) }}</td>
-            <td>{{ getGenderDisplay(cat.gender) }}</td>
-            <td>
-              {{ loofCharacteristicsStore.coatColors.find(color => color.id === cat.coat?.colorId)?.name || '-' }}
+            <td class="cat-name">
+              {{ cat.name }} <br v-if="cat.surname"> {{ cat.surname? `(${cat.surname})` : '' }}
             </td>
             <td>
-              {{ loofCharacteristicsStore.coatPatterns.find(pattern => pattern.id === cat.coat?.patternId)?.name || '-' }}
+              {{ cat.litter? formatDate(cat.litter.birthDate) : 'Inconnu' }}
+            </td>
+            <td>
+              {{ cat.isFemale? '♀️' : '♂️' }}
+            </td>
+            <td>{{ cat.pedigreeNumber }}</td>
+            <td>
+              <span v-if="cat.isDeceased" class="status-badge deceased">Décédé</span>
+              <span v-else-if="cat.isNeutered" class="status-badge neutered">Stérilisé</span>
+              <span v-else class="status-badge active">Actif</span>
             </td>
             <td class="actions">
-              <Button variant="info" size="sm" @click="openEditModal(cat)">Modifier</Button>
+              <Button variant="info" size="sm" @click="openEditModal(cat)" disabled>Modifier</Button>
               <Button variant="danger" size="sm" @click="deleteCat(cat.id)">Supprimer</Button>
             </td>
           </tr>
@@ -91,8 +95,8 @@ const deleteCat = async (id: number) => {
     </div>
   </Card>
 
-  <CatEditForm 
-    v-if="selectedCat" 
+  <CatEditForm
+    v-if="selectedCat"
     :cat="selectedCat" 
     :show="showEditModal" 
     @close="showEditModal = false" 
@@ -197,6 +201,30 @@ h2 {
   gap: var(--space-xs);
 }
 
+.status-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+.status-badge.active {
+  background-color: rgba(46, 213, 115, 0.2);
+  color: #2ed573;
+}
+
+.status-badge.neutered {
+  background-color: rgba(255, 165, 2, 0.2);
+  color: #ffa502;
+}
+
+.status-badge.deceased {
+  background-color: rgba(255, 71, 87, 0.2);
+  color: #ff4757;
+}
+
 @media (max-width: 768px) {
   h2 {
     font-size: calc(var(--font-size-lg) * 0.85);
@@ -210,6 +238,11 @@ h2 {
   .actions {
     flex-direction: column;
     gap: var(--space-xs);
+  }
+
+  .status-badge {
+    padding: var(--space-xs);
+    font-size: calc(var(--font-size-sm) * 0.85);
   }
 }
 </style>

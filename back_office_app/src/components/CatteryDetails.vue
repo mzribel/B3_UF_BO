@@ -3,9 +3,9 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useCatteriesStore } from '../stores/catteries';
 import { useCatsStore } from '../stores/cats';
 import { useBreederStore } from '../stores/breeder';
+import { useUsersStore } from '../stores/users';
 import { useRouter } from 'vue-router';
 import CatList from './CatList.vue';
-import BreederForm from './BreederForm.vue';
 import Card from '../design-system/components/Card.vue';
 import Button from '../design-system/components/Button.vue';
 
@@ -17,10 +17,10 @@ const router = useRouter();
 
 const catteriesStore = useCatteriesStore();
 const catsStore = useCatsStore();
-const breederStore = useBreederStore();
+const usersStore = useUsersStore();
 
-const activeTab = ref('cats'); // 'cats', 'members', 'breeder'
-const showBreederForm = ref(false);
+const activeTab = ref('cats');
+const showAddMemberModal = ref(false);
 
 const cattery = computed(() => catteriesStore.currentCattery);
 const loading = computed(() => catteriesStore.loading);
@@ -28,10 +28,41 @@ const error = computed(() => catteriesStore.error);
 const cats = computed(() => catsStore.cats);
 const catsLoading = computed(() => catsStore.loading);
 const catsError = computed(() => catsStore.error);
+const users = computed(() => usersStore.sortedUsers);
+const usersLoading = computed(() => usersStore.loading);
+const usersError = computed(() => usersStore.error);
+
+const allMembers = computed(() => {
+  if (!cattery.value || !cattery.value.members) return [];
+
+  const ownerExists = cattery.value.members.some(member => 
+    member.id === cattery.value.createdByUser.id
+  );
+
+  if (!ownerExists && cattery.value.createdByUser) {
+    return [
+      { ...cattery.value.createdByUser, isOwner: true },
+      ...cattery.value.members
+    ];
+  }
+
+  return cattery.value.members;
+});
+
+const availableUsers = computed(() => {
+  if (!cattery.value || !cattery.value.members) return users.value;
+
+  const memberIds = cattery.value.members.map(member => member.id);
+  if (cattery.value.createdByUser) {
+    memberIds.push(cattery.value.createdByUser.id);
+  }
+  return users.value.filter(user => !memberIds.includes(user.id));
+});
 
 const fetchCatteryData = async () => {
   await catteriesStore.fetchCatteryById(props.catteryId);
   if (activeTab.value === 'cats') {
+    console.log(`Fetching cats for cattery ID: ${props.catteryId}`);
     await catsStore.fetchCatsByCatteryId(props.catteryId);
   }
 };
@@ -39,6 +70,8 @@ const fetchCatteryData = async () => {
 watch(activeTab, async (newTab) => {
   if (newTab === 'cats') {
     await catsStore.fetchCatsByCatteryId(props.catteryId);
+  } else if (newTab === 'members') {
+    await usersStore.loadUsers();
   }
 });
 
@@ -59,15 +92,39 @@ const goBack = () => {
   router.push('/catteries');
 };
 
-const openBreederForm = () => {
-  showBreederForm.value = true;
+const openAddMemberModal = () => {
+  showAddMemberModal.value = true;
 };
 
-const handleBreederUpdated = async () => {
+const closeAddMemberModal = () => {
+  showAddMemberModal.value = false;
+};
+
+const addMember = async (userId: number) => {
+  const success = await catteriesStore.addUserToCattery(props.catteryId, userId);
+  if (success) {
+    closeAddMemberModal();
+  }
+};
+
+const removeMember = async (userId: number) => {
+  if (confirm('Êtes-vous sûr de vouloir retirer cet utilisateur de la chatterie ?')) {
+    await catteriesStore.removeUserFromCattery(props.catteryId, userId);
+  }
+};
+
+const promoteToAdmin = async (userId: number) => {
+  if (confirm('Êtes-vous sûr de vouloir promouvoir cet utilisateur en administrateur de la chatterie ?')) {
+    await catteriesStore.promoteUserToCatteryAdmin(props.catteryId, userId);
+  }
+};
+
+onMounted(async () => {
   await fetchCatteryData();
-};
-
-onMounted(fetchCatteryData);
+  if (activeTab.value === 'members') {
+    await usersStore.loadUsers();
+  }
+});
 </script>
 
 <template>
@@ -106,13 +163,6 @@ onMounted(fetchCatteryData);
         >
           Membres
         </button>
-        <button 
-          class="tab" 
-          :class="{ active: activeTab === 'breeder' }" 
-          @click="activeTab = 'breeder'"
-        >
-          Éleveur
-        </button>
       </div>
 
       <div v-if="activeTab === 'cats'" class="tab-content">
@@ -139,59 +189,90 @@ onMounted(fetchCatteryData);
       <div v-else-if="activeTab === 'members'" class="tab-content">
         <div class="tab-header">
           <h3>Membres de la Chatterie</h3>
-          <button class="btn-add" disabled>Ajouter un Membre</button>
+          <button class="btn-add" @click="openAddMemberModal">Ajouter un Membre</button>
         </div>
 
-        <div v-if="cattery.members && cattery.members.length > 0" class="members-list">
-          <div v-for="member in cattery.members" :key="member.id" class="member-card">
+        <div v-if="usersLoading" class="loading">
+          <div class="loading-spinner"></div>
+          <p>Chargement des utilisateurs...</p>
+        </div>
+
+        <div v-else-if="usersError" class="error-message">
+          <span class="error-icon">⚠️</span> {{ usersError }}
+          <button class="btn-retry" @click="usersStore.loadUsers">Réessayer</button>
+        </div>
+
+        <div v-else-if="allMembers.length > 0" class="members-list">
+          <div v-for="member in allMembers" :key="member.id" class="member-card">
             <div class="member-info">
-              <h4>{{ member.firstName }} {{ member.lastName }}</h4>
+              <h4>{{ member.displayName }}</h4>
               <p>{{ member.email }}</p>
-              <p class="member-role">{{ member.role }}</p>
+              <div class="member-badges">
+                <p class="member-role">{{ member.admin ? 'Administrateur' : 'Utilisateur' }}</p>
+                <p v-if="member.isOwner" class="member-owner">Propriétaire</p>
+              </div>
             </div>
-            <button class="btn-remove" disabled>Supprimer</button>
+            <div class="member-actions">
+              <Button
+                v-if="!member.isOwner && !member.admin"
+                variant="warning"
+                size="sm"
+                @click="promoteToAdmin(member.id)"
+              >
+                Promouvoir en Administrateur
+              </Button>
+              <Button
+                v-if="!member.isOwner"
+                variant="danger"
+                size="sm"
+                @click="removeMember(member.id)"
+              >
+                Retirer
+              </Button>
+            </div>
           </div>
         </div>
 
         <div v-else class="empty-state">
           <p>Aucun membre trouvé pour cette chatterie.</p>
         </div>
-      </div>
 
-      <div v-else-if="activeTab === 'breeder'" class="tab-content">
-        <div class="tab-header">
-          <h3>Éleveur de la Chatterie</h3>
-          <button class="btn-add" @click="openBreederForm">Mettre à jour l'Éleveur</button>
-        </div>
+        <div v-if="showAddMemberModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Ajouter un Membre</h3>
+              <button class="btn-close" @click="closeAddMemberModal">&times;</button>
+            </div>
 
-        <div v-if="cattery.breeder" class="breeder-info">
-          <div class="info-group">
-            <label>Nom :</label>
-            <p>{{ cattery.breeder.firstName }} {{ cattery.breeder.lastName }}</p>
+            <div v-if="usersLoading" class="loading">
+              <div class="loading-spinner"></div>
+              <p>Chargement des utilisateurs...</p>
+            </div>
+
+            <div v-else-if="usersError" class="error-message">
+              <span class="error-icon">⚠️</span> {{ usersError }}
+              <button class="btn-retry" @click="usersStore.loadUsers">Réessayer</button>
+            </div>
+
+            <div v-else-if="availableUsers.length === 0" class="empty-state">
+              <p>Tous les utilisateurs sont déjà membres de cette chatterie.</p>
+            </div>
+
+            <div v-else class="user-list">
+              <div v-for="user in availableUsers" :key="user.id" class="user-item">
+                <div class="user-info">
+                  <h4>{{ user.displayName }}</h4>
+                  <p>{{ user.email }}</p>
+                  <p class="user-role">{{ user.admin ? 'Administrateur' : 'Utilisateur' }}</p>
+                </div>
+                <button class="btn-add-user" @click="addMember(user.id)">Ajouter</button>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn-cancel" @click="closeAddMemberModal">Annuler</button>
+            </div>
           </div>
-
-          <div class="info-group">
-            <label>Email :</label>
-            <p>{{ cattery.breeder.email || 'Non fourni' }}</p>
-          </div>
-
-          <div class="info-group">
-            <label>Téléphone :</label>
-            <p>{{ cattery.breeder.phone || 'Non fourni' }}</p>
-          </div>
-
-          <div v-if="cattery.breeder.address" class="info-group">
-            <label>Adresse :</label>
-            <p>
-              {{ cattery.breeder.address.street || '' }}<br v-if="cattery.breeder.address.street">
-              {{ cattery.breeder.address.city || '' }}{{ cattery.breeder.address.city && cattery.breeder.address.state ? ', ' : '' }}{{ cattery.breeder.address.state || '' }} {{ cattery.breeder.address.zipCode || '' }}<br v-if="cattery.breeder.address.city || cattery.breeder.address.state || cattery.breeder.address.zipCode">
-              {{ cattery.breeder.address.country || '' }}
-            </p>
-          </div>
-        </div>
-
-        <div v-else class="empty-state">
-          <p>Aucune information d'éleveur trouvée pour cette chatterie. Cliquez sur "Mettre à jour l'Éleveur" pour ajouter les informations de l'éleveur.</p>
         </div>
       </div>
     </div>
@@ -203,12 +284,6 @@ onMounted(fetchCatteryData);
     </div>
   </Card>
 
-  <BreederForm 
-    :catteryId="catteryId" 
-    :show="showBreederForm" 
-    @close="showBreederForm = false" 
-    @breeder-updated="handleBreederUpdated" 
-  />
 </template>
 
 <style scoped>
@@ -424,10 +499,52 @@ h3 {
   color: #636e72;
 }
 
+.member-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .member-role {
   font-size: 0.875rem;
   color: #6c5ce7 !important;
   font-weight: 500;
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  background-color: rgba(108, 92, 231, 0.1);
+  border-radius: 4px;
+}
+
+.member-owner {
+  font-size: 0.875rem;
+  color: #e67e22 !important;
+  font-weight: 500;
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  background-color: rgba(230, 126, 34, 0.1);
+  border-radius: 4px;
+}
+
+.member-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn-promote {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-promote:hover {
+  background-color: #e67e22;
 }
 
 .btn-remove {
@@ -491,6 +608,114 @@ h3 {
   margin-bottom: 1.5rem;
 }
 
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #6c5ce7;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #636e72;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  background-color: #e9ecef;
+  color: #2d3436;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.user-list {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+}
+
+.user-info h4 {
+  margin: 0 0 0.25rem 0;
+  color: #2d3436;
+}
+
+.user-info p {
+  margin: 0.1rem 0;
+  color: #636e72;
+}
+
+.user-role {
+  font-size: 0.875rem;
+  color: #6c5ce7 !important;
+  font-weight: 500;
+}
+
+.btn-add-user {
+  background-color: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-add-user:hover {
+  background-color: #5b4bc4;
+}
+
 @media (max-width: 768px) {
   .cattery-details {
     padding: 1rem;
@@ -532,6 +757,22 @@ h3 {
 
   .btn-add {
     width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .member-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .member-actions {
+    margin-top: 0.5rem;
+    width: 100%;
+    flex-direction: row;
   }
 }
 </style>

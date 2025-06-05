@@ -29,7 +29,7 @@ const navigateTo = (path: string) => {
       <div class="characteristic-card" @click="navigateTo('/loof/coat-patterns')">
         <h2>Motifs de robe</h2>
         <p>Gérer les motifs de robe des chats</p>
-        <div class="card-icon">🔄</div>
+        <div class="card-icon">🐈</div>
       </div>
 
       <div class="characteristic-card" @click="navigateTo('/loof/coat-effects')">
@@ -47,7 +47,7 @@ const navigateTo = (path: string) => {
       <div class="characteristic-card" @click="navigateTo('/loof/poly-types')">
         <h2>Types de polydactylie</h2>
         <p>Gérer les différents types de polydactylie</p>
-        <div class="card-icon">👣</div>
+        <div class="card-icon">🐾</div>
       </div>
     </div>
   </PageLayout>

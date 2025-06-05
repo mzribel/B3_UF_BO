@@ -82,6 +82,7 @@ export const useCatsStore = defineStore('cats', () => {
     try {
       const response = await catApi.getCatteryCats(catteryId);
       cats.value = response.data;
+      console.log(`Loaded ${cats.value.length} cats for cattery ${catteryId}`);
     } catch (err) {
       console.error(`Error loading cats for cattery ${catteryId}:`, err);
       error.value = 'Erreur lors du chargement des chats pour la chatterie. Veuillez réessayer.';

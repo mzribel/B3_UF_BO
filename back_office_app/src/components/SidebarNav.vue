@@ -46,9 +46,8 @@ const logout = async () => {
       <button @click="logout">
         <span class="icon-placeholder">🚪</span> Déconnexion
       </button>
-      <div>Connecté en tant que :</div>
       <div v-if="authStore.isAuthenticated" >
-        <span>{{ authStore.user?.displayName }}</span>
+        <span>( Connecté en tant que {{ authStore.user?.displayName }} )</span>
       </div>
     </div>
   </div>

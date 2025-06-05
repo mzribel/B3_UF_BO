@@ -64,26 +64,6 @@ const validateForm = (): boolean => {
     return false;
   }
 
-  if (!newCat.value.birthDate) {
-    formErrors.value.birthDate = 'La date de naissance est requise';
-    return false;
-  }
-
-  if (!newCat.value.gender) {
-    formErrors.value.gender = 'Le genre est requis';
-    return false;
-  }
-
-  if (!selectedColorId.value) {
-    formErrors.value.coatColor = 'La couleur du pelage est requise';
-    return false;
-  }
-
-  if (!selectedPatternId.value) {
-    formErrors.value.coatPattern = 'Le motif du pelage est requis';
-    return false;
-  }
-
   if (!catteryId.value) {
     formErrors.value.general = 'L\'ID de la chatterie est requis';
     return false;
@@ -120,6 +100,10 @@ const submitForm = async () => {
         patternId: undefined,
         effectId: undefined,
         whiteMarkingId: undefined
+      },
+      litter: {
+        birthDate: '',
+        name: ''
       },
       breedId: undefined
     };
@@ -169,7 +153,7 @@ const submitForm = async () => {
 
       <div class="form-group">
         <Input 
-          v-model="newCat.birthDate" 
+          v-model="newCat.litter.birthDate"
           type="date"
           label="Date de Naissance :"
           :error="formErrors.birthDate"

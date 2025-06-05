@@ -114,6 +114,25 @@ export const useCatteriesStore = defineStore('catteries', () => {
     }
   };
 
+  const promoteUserToCatteryAdmin = async (catteryId: number, userId: number) => {
+    loading.value = true;
+    error.value = '';
+
+    try {
+      await catteryApi.promoteUserToCatteryAdmin(catteryId, userId);
+      if (currentCattery.value && currentCattery.value.id === catteryId) {
+        await fetchCatteryById(catteryId);
+      }
+      return true;
+    } catch (err) {
+      console.error('Error promoting user to cattery admin:', err);
+      error.value = 'Impossible de promouvoir l\'utilisateur en administrateur de la chatterie. Veuillez réessayer.';
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   return {
     catteries,
     currentCattery,
@@ -124,6 +143,7 @@ export const useCatteriesStore = defineStore('catteries', () => {
     createCattery,
     deleteCattery,
     addUserToCattery,
-    removeUserFromCattery
+    removeUserFromCattery,
+    promoteUserToCatteryAdmin
   };
 });

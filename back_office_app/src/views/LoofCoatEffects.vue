@@ -33,8 +33,8 @@ onMounted(() => {
     description="Gérez les effets de robe reconnus par le LOOF. Ces effets sont utilisés lors de la création et de la mise à jour des chats."
   >
     <LoofCharacteristicsList
-      title="Coat Effects"
-      singularTitle="Coat Effect"
+      title="Effets de robe"
+      singularTitle="un effet de robe"
       :items="coatEffects"
       :loading="loading"
       :error="error"

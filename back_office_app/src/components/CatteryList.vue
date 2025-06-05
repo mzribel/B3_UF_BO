@@ -58,7 +58,6 @@ const createNewCattery = () => {
           <tr>
             <th>ID</th>
             <th>Nom</th>
-            <th>Éleveur</th>
             <th>Membres</th>
             <th>Actions</th>
           </tr>
@@ -67,13 +66,7 @@ const createNewCattery = () => {
           <tr v-for="cattery in catteries" :key="cattery.id" class="cattery-row">
             <td>{{ cattery.id }}</td>
             <td class="cattery-name">{{ cattery.linkedBreeder.name }}</td>
-            <td>
-              <span v-if="cattery.linkedBreeder.ownerId">
-                {{ userStore.sortedUsers.find(user => user.id === cattery.linkedBreeder.ownerId)?.displayName || 'Inconnu' }}
-              </span>
-              <span v-else>-</span>
-            </td>
-            <td>{{ cattery.members?.length || 0 }}</td>
+            <td>{{ cattery.members?.length + 1 || 1 }}</td>
             <td class="actions">
               <Button variant="info" size="sm" @click="viewCatteryDetails(cattery.id)">Voir</Button>
               <Button variant="danger" size="sm" @click="deleteCattery(cattery.id)">Supprimer</Button>

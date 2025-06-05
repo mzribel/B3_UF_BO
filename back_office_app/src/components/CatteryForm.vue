@@ -17,7 +17,6 @@ const router = useRouter();
 const catteriesStore = useCatteriesStore();
 
 const name = ref('');
-const breederId = ref<number | null>(null);
 const loading = computed(() => catteriesStore.loading);
 const error = computed(() => catteriesStore.error);
 
@@ -39,7 +38,6 @@ const handleSubmit = async () => {
 
   const catteryData: NewCattery = {
     name: name.value.trim(),
-    breederId: breederId.value || undefined
   };
 
   let success;
@@ -63,8 +61,6 @@ const handleCancel = () => {
 
 <template>
   <div class="cattery-form">
-    <h2>{{ isEdit ? 'Modifier la Chatterie' : 'Créer une Nouvelle Chatterie' }}</h2>
-
     <div v-if="error" class="bg-error error-message">
       <span class="error-icon">⚠️</span> {{ error }}
     </div>
@@ -83,15 +79,6 @@ const handleCancel = () => {
         placeholder="Entrez le nom de la chatterie"
         :error="nameError"
         required
-        fullWidth
-      />
-
-      <Input 
-        v-model="breederId" 
-        type="number" 
-        label="ID de l'Éleveur (Optionnel)"
-        placeholder="Entrez l'ID de l'éleveur si disponible"
-        helpText="Laissez vide si vous souhaitez configurer l'éleveur plus tard"
         fullWidth
       />
     </Form>
