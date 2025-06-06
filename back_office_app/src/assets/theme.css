@@ -1,0 +1,73 @@
+:root {
+  /* Primary Colors */
+  --primary-color: #f5c9b2;
+  --primary-dark: #d6a77a;
+  --primary-light: #fff4ed;
+
+  /* Secondary Colors */
+  --secondary-color: #6c5ce7;
+  --secondary-dark: #4e4e4e;
+  --secondary-light: #e9d6f9;
+
+  /* Text Colors */
+  --h1-color: #57412f;
+  --text-light: #ffffff;
+  --text-dark: #4e4e4e;
+  --text-muted: #888888;
+  --text-link: #b388eb;
+  --text-highlight: #d6a77a;
+
+  /* Background Colors */
+  --bg-dark: #f2e7dc;
+  --bg-light: #fdfaf6;
+  --bg-muted: #f8f1eb;
+  --bg-header: #ffe8db;
+  --bg-footer: #f5ede5;
+
+  /* Border Colors */
+  --border-light: #f0e6de;
+  --border-medium: #e3d7ce;
+  --border-active: #c3a8e3;
+
+  /* Status Colors */
+  --success: #a4d4ae;
+  --warning: #ffe6a7;
+  --error: #f28c8c;
+  --error-light: #ffecec;
+  --error-dark: #c94c4c;
+
+  /* Button Colors */
+  --btn-primary-bg: #d6a48b;
+  --btn-primary-hover: #e3b499;
+  --btn-secondary-bg: #e9d6f9;
+  --btn-secondary-hover: #d7c0f0;
+  --btn-secondary-text: #4e4e4e;
+  --btn-disabled: #d0cfcf;
+
+  /* Shadow */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-focus: 0 0 0 2px rgba(179, 136, 235, 0.3);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* Typography */
+  --font-family: 'Poppins', 'Segoe UI', 'Arial', sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.5rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --line-height: 1.6;
+}
