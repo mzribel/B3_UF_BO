@@ -5,6 +5,8 @@ import PageLayout from "../components/views/PageLayout.vue";
 
 <template>
     <PageLayout title="Système de Gestion de Chats" description="Bienvenue dans le système de gestion de chats. Sélectionnez une option ci-dessous pour commencer.">
+
+
       <div class="card-container">
         <DashboardCard
           title="Chatteries"
