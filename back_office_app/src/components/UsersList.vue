@@ -3,8 +3,10 @@ import { computed } from 'vue';
 import { useUsersStore } from '../stores/users';
 import Card from '../design-system/components/Card.vue';
 import type { User } from '../types';
+import {useAuthStore} from "../stores/auth.ts";
 
 const usersStore = useUsersStore();
+const authStore = useAuthStore();
 
 const users = computed(() => usersStore.sortedUsers);
 const loading = computed(() => usersStore.loading);
@@ -73,12 +75,24 @@ const toggleAdminStatus = async (user: User) => {
             <td class="user-name">{{ user.displayName }}</td>
             <td>{{ user.email }}</td>
             <td>
-              <div class="toggle-switch">
+              <div v-if="user.id != authStore.user?.id " class="toggle-switch">
                 <label class="switch">
                   <input 
                     type="checkbox" 
                     :checked="user.admin" 
                     @change="toggleAdminStatus(user)"
+                  >
+                  <span class="slider round"></span>
+                </label>
+                <span class="toggle-label">{{ user.admin ? 'Oui' : 'Non' }}</span>
+              </div>
+              <div v-else class="toggle-switch">
+                <label class="switch">
+                  <input
+                      type="checkbox"
+                      :checked="user.admin"
+                      @change="toggleAdminStatus(user)"
+                      disabled
                   >
                   <span class="slider round"></span>
                 </label>

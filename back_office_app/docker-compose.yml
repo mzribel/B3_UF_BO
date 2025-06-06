@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  back-office-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: back-office-app
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+networks:
+  default:
+    driver: bridge
